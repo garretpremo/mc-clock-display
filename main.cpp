@@ -31,6 +31,7 @@ void draw(Canvas *canvas, int iteration) {
 }
 
 int main(int argc, char* argv[]) {
+    // define defaults
     RGBMatrix::Options defaults;
     defaults.hardware_mapping = "regular";
     defaults.rows = 16;
@@ -41,7 +42,7 @@ int main(int argc, char* argv[]) {
 
     Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
 
-    if (canvas == null) {
+    if (canvas == NULL) {
         return EXIT_FAILURE;
     }
 
@@ -49,6 +50,9 @@ int main(int argc, char* argv[]) {
     signal(SIGINT, InterruptHandler);
 
     int i = 0;
+
+    ssize_t frame_size = canvas->width() * canvas->height() * 3;
+    uint8_t buf[frame_size];
 
     while (1) {
         struct timespec start;
@@ -58,8 +62,8 @@ int main(int argc, char* argv[]) {
         ssize_t nread;
         ssize_t total_nread = 0;
         while ((nread = read(STDIN_FILENO, &buf[total_nread], frame_size - total_nread)) > 0) {
-            if (interrupt_received) {
-                return 1;
+            if (program_interrupted) {
+                return EXIT_FAILURE;
             }
             total_nread += nread;
         }
