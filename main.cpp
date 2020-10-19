@@ -61,7 +61,13 @@ int main(int argc, char* argv[]) {
     signal(SIGTERM, InterruptHandler);
     signal(SIGINT, InterruptHandler);
 
-    draw(canvas);
+    while(true) {
+        if (program_interrupted) {
+            break;
+        }
+        
+        draw(canvas);
+    }
     // int i = 0;
 
     // ssize_t frame_size = canvas->width() * canvas->height() * 3;
