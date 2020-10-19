@@ -2,6 +2,7 @@
 
 #include <math.h>
 #include <signal.h>
+#include <iostream>
 #include <stdio.h>
 #include <time.h>
 #include <unistd.h>
@@ -15,6 +16,7 @@ using rgb_matrix::Canvas;
 volatile bool program_interrupted = false;
 static void InterruptHandler(int signo) {
   program_interrupted = true;
+  std::cout << "Ctrl + C detected, exiting...";
 }
 
 void draw(Canvas *canvas, int iteration) {
@@ -31,6 +33,8 @@ void draw(Canvas *canvas, int iteration) {
 }
 
 int main(int argc, char* argv[]) {
+    std::cout << "Beginning program...\nPress Ctrl + C to exit.\n";
+
     // define defaults
     RGBMatrix::Options defaults;
     defaults.hardware_mapping = "regular";
