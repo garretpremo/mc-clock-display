@@ -1,6 +1,10 @@
-#include "led-matrix.h"
+#include "./rpi-rgb-led-matrix/include/led-matrix.h"
 
 #include <math.h>
+#include <signal.h>
+#include <stdio.h>
+#include <time.h>
+#include <unistd.h>
 
 using rgb_matrix::RGBMatrix;
 using rgb_matrix::Canvas;
@@ -64,7 +68,7 @@ int main(int argc, char* argv[]) {
             break;
         }
 
-        draw(i++);
+        draw(canvas, i++);
 
         // throttle the loop so we only run 60 iterations per second
         struct timespec end;
