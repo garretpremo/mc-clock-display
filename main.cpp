@@ -21,7 +21,7 @@ static void InterruptHandler(int signo) {
 
 void draw(Canvas *canvas) {
 
-    canvas->Fill(255, 0, 0);
+    canvas->Fill(255, 180, 180);
 
     int center_x = canvas->width() / 2;
     int center_y = canvas->height() / 2;
@@ -35,13 +35,13 @@ void draw(Canvas *canvas) {
         
         float dot_x = cos(a * 2 * M_PI) * r;
         float dot_y = sin(a * 2 * M_PI) * r;
-        canvas->SetPixel(center_x + dot_x, center_y + dot_y, 255, 255, 0);
+        canvas->SetPixel(center_x + dot_x, center_y + dot_y, 0, 0, 255);
         usleep(1 * 1000);  // wait a little to slow down things.
     }
 }
 
 int main(int argc, char* argv[]) {
-    std::cout << "Beginning program...\nPress Ctrl + C to exit." << std::endl;
+    std::cout << std::endl << "Beginning program...\nPress Ctrl + C to exit." << std::endl;
 
     // define defaults
     RGBMatrix::Options defaults;
@@ -50,7 +50,7 @@ int main(int argc, char* argv[]) {
     defaults.cols = 32;
     defaults.chain_length = 1;
     defaults.parallel = 1;
-    defaults.brightness = 50;
+    defaults.brightness = 40;
 
     Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
 
@@ -65,7 +65,7 @@ int main(int argc, char* argv[]) {
         if (program_interrupted) {
             break;
         }
-        
+
         draw(canvas);
     }
     // int i = 0;
