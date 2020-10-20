@@ -149,7 +149,7 @@ void drawClock(Canvas* canvas, Image* image) {
     canvas->Fill(100, 100, 100);
 
     for(int y = 0; y < image->height; y++) {
-        png_bytep row = image->rowPpointers[y];
+        png_bytep row = image->rowPointers[y];
         
         for(int x = 0; x < image->width; x++) {
             png_bytep px = &(row[x * 4]);
