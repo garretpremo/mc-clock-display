@@ -25,14 +25,13 @@ public:
     int height;
     png_byte colorType;
     png_byte bitDepth;
-    png_bytep *row_pointers = NULL;
+    png_bytep *rowPointers = NULL;
 
     Image(char* _filename) {
         filename = _filename;
         initialize();
         printStatistics();
     }
-
 
 private:
     void initialize() {
@@ -42,7 +41,6 @@ private:
             fclose(file);
             return;
         }
-
         
         png_structp png = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
         if (!png) {
@@ -66,7 +64,27 @@ private:
         colorType = png_get_color_type(png, info);
         bitDepth = png_get_bit_depth(png, info);
 
+        png_set_palette_to_rgb(png);
+
+        if (png_get_valid(png, info, PNG_INFO_tRNS)) {
+            png_set_tRNS_to_alpha(png);
+        }
+
+        // fill alpha channel with 0xFF
+        png_set_filler(png, 0xFF, PNG_FILLER_AFTER);
+        png_read_update_info(png, info);
+
+        // initialize rows
+        rowPointers = (png_bytep*)malloc(sizeof(png_bytep) * height);
+        
+        for(int y = 0; y < height; y++) {
+            rowPointers[y] = (png_byte*)malloc(png_get_rowbytes(png, info));
+        }
+
+        png_read_image(png, rowPointers);
+
         fclose(file);
+        png_destroy_read_struct(&png, &info, NULL);
     }
 
     void determineIfPngFile(FILE* file) {
@@ -127,6 +145,18 @@ void draw(Canvas *canvas, Color background, Color foreground) {
 }
 
 void drawClock(Canvas* canvas, Image* image) {
+
+    canvas->Fill(100, 100, 100);
+
+    for(int y = 0; y < image->height; y++) {
+        png_bytep row = image->rowPpointers[y];
+        
+        for(int x = 0; x < image->width; x++) {
+            png_bytep px = &(row[x * 4]);
+
+            printf("%4d, %4d = RGBA(%3d, %3d, %3d, %3d)\n", x, y, px[0], px[1], px[2], px[3]);
+    }
+  }
 }
 
 // get a random number between 0 and 255
