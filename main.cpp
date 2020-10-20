@@ -122,8 +122,8 @@ public:
         }
     }
 
-    void draw() const override {
-        PixelMatrix::draw();
+    void draw(Canvas* canvas) const override {
+        PixelMatrix::draw(canvas);
         usleep(1 * 1000000);
     }
 
@@ -255,6 +255,10 @@ public:
             { Pixel::White(), Pixel::White(), Pixel::White() }   // ***
         };
         return Number(matrix);
+    }
+
+    void draw(Canvas* canvas, int startX, int startY) const override {
+        PixelMatrix::draw(canvas, startX, startY);
     }
 };
 
