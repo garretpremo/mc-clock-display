@@ -123,7 +123,7 @@ public:
     }
 
     void drawImage(Canvas* canvas) {
-        PixelMaxtrix::draw(canvas);
+        PixelMatrix::draw(canvas);
         usleep(1 * 1000000);
     }
 
