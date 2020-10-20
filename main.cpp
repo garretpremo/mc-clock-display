@@ -35,19 +35,19 @@ public:
     }
 
     static MColor White() {
-        return Color(255, 255, 255, 255);
+        return MColor(255, 255, 255, 255);
     }
 
     static MColor Red() {
-        return Color(255, 0, 0, 255);
+        return MColor(255, 0, 0, 255);
     }
 
     static MColor Green() {
-        return Color(0, 255, 0, 255);
+        return MColor(0, 255, 0, 255);
     }
 
     static MColor Blue() {
-        return Color(0, 0, 255, 255);
+        return MColor(0, 0, 255, 255);
     }
 };
 
