@@ -205,7 +205,7 @@ void draw(Canvas *canvas, Color background, Color foreground) {
 
 void drawImage(Canvas *canvas, Image *image) {
 
-    canvas->Fill(0, 0, 150);
+    canvas->Fill(150, 60, 0);
 
     for (int y = 0; y < image->height; y++) {
         if (program_interrupted) {
@@ -213,20 +213,13 @@ void drawImage(Canvas *canvas, Image *image) {
         }
 
         std::vector<Pixel> pixelRow = image->pixelMatrix[y];
-        // Pixel *row = image->rows[y];
-        // png_bytep row = image->rowPointers[y];
 
         for (int x = 0; x < image->width; x++) {
             Pixel pixel = pixelRow[x];
 
-            if (pixel.isBlack()) {
-                continue;
+            if (!pixel.isBlack()) {
+                canvas->SetPixel(x, y, pixel.r, pixel.g, pixel.b);
             }
-
-            canvas->SetPixel(x, y, pixel.r, pixel.g, pixel.b);
-
-            // png_bytep px = &(row[x * 4]);
-            // canvas->SetPixel(x, y, px[0], px[1], px[2]);
         }
     }
     usleep(1 * 1000000);
