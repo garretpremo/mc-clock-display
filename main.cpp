@@ -1,4 +1,5 @@
 #include "./rpi-rgb-led-matrix/include/led-matrix.h"
+#include "./rpi-rgb-led-matrix/include/graphics.h"
 
 #include <math.h>
 #include <signal.h>
