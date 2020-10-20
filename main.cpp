@@ -82,8 +82,7 @@ public:
     }
 
 private:
-    void initialize()
-    {
+    void initialize() {
         FILE *file = fopen(filename, "rb");
 
         if (!file) {
@@ -138,8 +137,7 @@ private:
             std::vector<Pixel> pixelRow = {};
             png_bytep row = rowPointers[y];
 
-            for (int x = 0; x < image->width; x++) {
-
+            for (int x = 0; x < width; x++) {
                 png_bytep px = &(row[x * 4]);
 
                 Pixel pixel = Pixel(px[0], px[1], px[2]);
@@ -216,7 +214,7 @@ void drawImage(Canvas *canvas, Image *image) {
 
         std::vector<Pixel> pixelRow = image->pixelMatrix[y];
         // Pixel *row = image->rows[y];
-        png_bytep row = image->rowPointers[y];
+        // png_bytep row = image->rowPointers[y];
 
         for (int x = 0; x < image->width; x++) {
             Pixel pixel = pixelRow[x];
