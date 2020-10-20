@@ -21,9 +21,9 @@ static void InterruptHandler(int signo) {
   std::cout << std::endl << "Ctrl + C detected, exiting..." << std::endl;
 }
 
-void draw(Canvas *canvas, Color colorA, Color colorB) {
+void draw(Canvas *canvas, Color background, Color foreground) {
 
-    canvas->Fill(255, 180, 180);
+    canvas->Fill(background.r, background.g, background.b);
 
     int center_x = canvas->width() / 2;
     int center_y = canvas->height() / 2;
@@ -37,7 +37,7 @@ void draw(Canvas *canvas, Color colorA, Color colorB) {
         
         float dot_x = cos(a * 2 * M_PI) * r;
         float dot_y = sin(a * 2 * M_PI) * r;
-        canvas->SetPixel(center_x + dot_x, center_y + dot_y, 0, 0, 255);
+        canvas->SetPixel(center_x + dot_x, center_y + dot_y, foreground.r, foreground.g, foreground.b);
         usleep(1 * 1000);  // wait a little to slow down things.
     }
 }
@@ -74,15 +74,18 @@ int main(int argc, char* argv[]) {
     signal(SIGTERM, InterruptHandler);
     signal(SIGINT, InterruptHandler);
 
+    Color background = randomColor();
+
     while(true) {
         if (program_interrupted) {
             break;
         }
 
-        Color colorA = randomColor();
-        Color colorB = randomColor();
+        Color foreground = randomColor();
 
-        draw(canvas, colorA, colorB);
+        draw(canvas, background, foreground);
+
+        background = foreground;
     }
     
     canvas->Clear();
