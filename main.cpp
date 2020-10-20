@@ -145,7 +145,7 @@ void draw(Canvas *canvas, Color background, Color foreground) {
 }
 
 void drawImage(Canvas* canvas, Image* image) {
-    for (int y = 0; y < image->height; y++) {
+    for (int y = 0; y < image->height && !program_interrupted; y++) {
         png_bytep row = image->rowPointers[y];
         
         for (int x = 0; x < image->width; x++) {
@@ -179,7 +179,7 @@ int main(int argc, char* argv[]) {
     defaults.cols = 32;
     defaults.chain_length = 1;
     defaults.parallel = 1;
-    defaults.brightness = 40;
+    defaults.brightness = 75;
 
     Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
     Image dawn = Image("./assets/images/dawn.png");
