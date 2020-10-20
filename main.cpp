@@ -72,7 +72,7 @@ class PixelMatrix {
 public:
     std::vector<std::vector<Pixel>> pixelMatrix;
 
-    virtual void draw(Canvas* canvas, int startX, int startY) const override {
+    virtual void draw(Canvas* canvas, int startX, int startY) {
         for (uint y = 0; y < pixelMatrix.size(); y++) {
             if (program_interrupted) {
                 return;
@@ -90,7 +90,7 @@ public:
         }
     }
 
-    virtual void draw(Canvas* canvas) const override {
+    virtual void draw(Canvas* canvas) {
         draw(canvas, 0, 0);
     }
 };
@@ -122,8 +122,8 @@ public:
         }
     }
 
-    void draw(Canvas* canvas) const override {
-        PixelMatrix::draw(canvas);
+    virtual void drawImage(Canvas* canvas) {
+        PixelMaxtrix::draw(canvas);
         usleep(1 * 1000000);
     }
 
@@ -256,14 +256,6 @@ public:
         };
         return Number(matrix);
     }
-
-    void draw(Canvas* canvas, int startX, int startY) const override {
-        PixelMatrix::draw(canvas, startX, startY);
-    }
-
-    void draw(Canvas* canvas) const override {
-        PixelMatrix::draw(canvas);
-    }
 };
 
 void draw(Canvas *canvas, Color background, Color foreground) {
@@ -330,8 +322,8 @@ int main(int argc, char* argv[]) {
 
         canvas->Fill(150, 60, 0);
 
-        Number::One().draw(canvas, 16, 0);
-        Number::Two().draw(canvas, 19, 0);
+        // Number::One().draw(canvas, 16, 0);
+        // Number::Two().draw(canvas, 19, 0);
         
         dawn.draw(canvas);
         noon.draw(canvas);
