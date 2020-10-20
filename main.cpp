@@ -73,14 +73,14 @@ public:
     std::vector<std::vector<Pixel>> pixelMatrix;
 
     void draw(Canvas* canvas, int startX, int startY) {
-        for (int y = 0; y < height; y++) {
+        for (int y = 0; y < pixelMatrix.size; y++) {
             if (program_interrupted) {
                 return;
             }
 
             std::vector<Pixel> pixelRow = pixelMatrix[y];
 
-            for (int x = 0; x < width; x++) {
+            for (int x = 0; x < pixelRow.size; x++) {
                 Pixel pixel = pixelRow[x];
 
                 if (!pixel.isInvisible()) {
