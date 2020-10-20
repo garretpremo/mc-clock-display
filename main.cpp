@@ -9,19 +9,24 @@
 #include <unistd.h>
 #include <png.h>
 
-using rgb_matrix::RGBMatrix;
 using rgb_matrix::Canvas;
 using rgb_matrix::Color;
+using rgb_matrix::RGBMatrix;
 
 #define FPS 60
 #define MAX_COLOR_VALUE 255
 
+volatile bool program_interrupted = false;
+static void InterruptHandler(int signo) {
+    program_interrupted = true;
+    std::cout << std::endl
+              << "Ctrl + C detected, exiting..." << std::endl;
+}
+
 class Pixel {
 
 public:
-    int r;
-    int g;
-    int b;
+    int r, g, b;
 
     Pixel(int red, int green, int blue) {
         r = normalize(red);
@@ -43,9 +48,7 @@ private:
 
         return pixelValue;
     }
-
 };
-
 
 // PNG Image wrapper for pnglib
 class Image {
@@ -57,9 +60,9 @@ public:
     png_byte colorType;
     png_byte bitDepth;
     png_bytep *rowPointers = NULL;
-    Pixel** rows = NULL;
+    std::vector<std::vector<Pixel>> pixelMatrix = NULL;
 
-    Image(const char* _filename) {
+    Image(const char *_filename) {
         filename = _filename;
         initialize();
         // printStatistics();
@@ -67,35 +70,36 @@ public:
 
     ~Image() {
         if (rowPointers != NULL) {
-	    for (int row = 0; row < height; row++) {
+            for (int row = 0; row < height; row++) {
                 free(rowPointers[row]);
                 delete rowPointers[row];
             }
 
-	    free(rowPointers);
-	    delete rowPointers;
-	}
+            free(rowPointers);
+            delete rowPointers;
+        }
 
-	if (rows != NULL) {
-            for (int row = 0; row < height; row++) {
-                free(rows[row]);
-		delete rows[row];
-	    }
+        // if (rows != NULL) {
+        //     for (int row = 0; row < height; row++) {
+        //         free(rows[row]);
+        //         delete rows[row];
+        //     }
 
-            free(rows);
-	    delete rows;
-	}
+        //     free(rows);
+        //     delete rows;
+        // }
     }
 
 private:
-    void initialize() {
-        FILE* file = fopen(filename, "rb");
+    void initialize()
+    {
+        FILE *file = fopen(filename, "rb");
 
         if (!file) {
             fclose(file);
             return;
         }
-        
+
         png_structp png = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
         if (!png) {
             failInitialization(file);
@@ -129,23 +133,22 @@ private:
         png_read_update_info(png, info);
 
         // initialize rows
-        rowPointers = (png_bytep*)malloc(sizeof(png_bytep) * height);
-	rows = (Pixel**)malloc(sizeof(Pixel*) * height);
-        
-        for(int y = 0; y < height; y++) {
-	  
-	    png_byte* byte = (png_byte*)malloc(png_get_rowbytes(png, info));
-	    Pixel* pixels = (Pixel*)malloc(sizeof(Pixel) * width);
+        rowPointers = (png_bytep *)malloc(sizeof(png_bytep) * height);
+        // rows = (Pixel**)malloc(sizeof(Pixel*) * height);
+
+        for (int y = 0; y < height; y++) {
+
+            png_byte *byte = (png_byte *)malloc(png_get_rowbytes(png, info));
+            // Pixel* pixels = (Pixel*)malloc(sizeof(Pixel) * width);
 
             rowPointers[y] = byte;
 
-	    for (int x = 0; x < width; x++) {
-                png_bytep px = &(byte[x * 4]);
+            // for (int x = 0; x < width; x++) {
+            //     png_bytep px = &(byte[x * 4]);
+            //     pixels[x] = Pixel(px[0], px[1], px[2]);
+            // }
 
-            	pixels[x] = Pixel(px[0], px[1], px[2]);
-	    }
-
-	    rows[y] = pixels;
+            // rows[y] = pixels;
         }
 
         png_read_image(png, rowPointers);
@@ -154,14 +157,15 @@ private:
         png_destroy_read_struct(&png, &info, NULL);
     }
 
-    void determineIfPngFile(FILE* file) {
+    void determineIfPngFile(FILE *file) {
         int headerSize = 8;
-        unsigned char* header = (unsigned char*) malloc(sizeof(unsigned char) * headerSize);
+        unsigned char *header = (unsigned char *)malloc(sizeof(unsigned char) * headerSize);
 
         fread(header, 1, headerSize, file);
         bool isPng = !png_sig_cmp(header, 0, headerSize);
 
-        if (!isPng) {
+        if (!isPng)
+        {
             std::cerr << "Error - Could not open file - File is not of type 'png'." << std::endl;
             fclose(file);
             free(header);
@@ -171,7 +175,7 @@ private:
         free(header);
     }
 
-    void failInitialization(FILE* file) {
+    void failInitialization(FILE *file) {
         fclose(file);
         abort();
     }
@@ -184,12 +188,6 @@ private:
     }
 };
 
-volatile bool program_interrupted = false;
-static void InterruptHandler(int signo) {
-  program_interrupted = true;
-  std::cout << std::endl << "Ctrl + C detected, exiting..." << std::endl;
-}
-
 void draw(Canvas *canvas, Color background, Color foreground) {
 
     canvas->Fill(background.r, background.g, background.b);
@@ -198,35 +196,35 @@ void draw(Canvas *canvas, Color background, Color foreground) {
     int center_y = canvas->height() / 2;
     float radius_max = canvas->width() / 2;
     float angle_step = 1.0 / 360;
-    
+
     for (float a = 0, r = 0; r < radius_max; a += angle_step, r += angle_step) {
         if (program_interrupted) {
             return;
         }
-        
+
         float dot_x = cos(a * 2 * M_PI) * r;
         float dot_y = sin(a * 2 * M_PI) * r;
         canvas->SetPixel(center_x + dot_x, center_y + dot_y, foreground.r, foreground.g, foreground.b);
-        usleep(1 * 1000);  // wait a little to slow down things.
+        usleep(1 * 1000); // wait a little to slow down things.
     }
 }
 
-void drawImage(Canvas* canvas, Image* image) {
-    
+void drawImage(Canvas *canvas, Image *image) {
+
     canvas->Fill(0, 0, 255);
 
     for (int y = 0; y < image->height; y++) {
-	if (program_interrupted) {
+        if (program_interrupted) {
             return;
-	}
+        }
 
-	Pixel* row = image->rows[y];
-        // png_bytep row = image->rowPointers[y];
-        
+        // Pixel *row = image->rows[y];
+        png_bytep row = image->rowPointers[y];
+
         for (int x = 0; x < image->width; x++) {
-            Pixel pixel = row[x];
-            	    
-    	    // png_bytep px = &(row[x * 4]);
+            // Pixel pixel = row[x];
+
+            png_bytep px = &(row[x * 4]);
 
             canvas->SetPixel(x, y, pixel.r, pixel.g, pixel.b);
         }
@@ -246,7 +244,7 @@ Color randomColor() {
 int main(int argc, char* argv[]) {
     std::cout << "Beginning program...\nPress Ctrl + C to exit." << std::endl;
 
-    srand (time(NULL));
+    srand(time(NULL));
 
     // define matrix defaults
     RGBMatrix::Options defaults;
@@ -282,7 +280,7 @@ int main(int argc, char* argv[]) {
         // draw(canvas, background, foreground);
         // background = foreground;
     }
-    
+
     canvas->Clear();
     delete canvas;
     return EXIT_SUCCESS;
