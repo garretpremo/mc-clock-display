@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <unistd.h>
+#include <png.h>
 
 using rgb_matrix::RGBMatrix;
 using rgb_matrix::Canvas;
@@ -14,6 +15,46 @@ using rgb_matrix::Color;
 
 #define FPS 60
 #define MAX_COLOR_VALUE 255
+
+// PNG Image wrapper for pnglib
+class Image {
+
+public:
+    char *filename;
+
+    Image(char *filename) {
+        this.filename = filename;
+        initialize();
+    }
+
+private:
+    initialize() {
+        FILE *file = fopen(filename, "rb");
+
+        if (!file) {
+            fclose(file);
+            return;
+        }
+
+        int headerSize = 8;
+        char *header = (char*) malloc(sizeof(char) * headerSize);
+
+        fread(header, 1, headerSize, file);
+        isPng = !png_sig_cmp(header, 0, headerSize);
+
+        if (!isPng) {
+            std::cerr << "Error - Could not open file - File is not of type 'png'." << std::endl;
+            fclose(file);
+            free(header);
+            return;
+        }
+
+        png_structp pngPtr = png_create_read_struct(PNG_LIBPNG_VER_STRING, (png_voidp)user_error_ptr, user_error_fn, user_warning_fn);
+
+        fclose(file);
+        free(header);
+    }
+}
 
 volatile bool program_interrupted = false;
 static void InterruptHandler(int signo) {
@@ -40,6 +81,12 @@ void draw(Canvas *canvas, Color background, Color foreground) {
         canvas->SetPixel(center_x + dot_x, center_y + dot_y, foreground.r, foreground.g, foreground.b);
         usleep(1 * 1000);  // wait a little to slow down things.
     }
+}
+
+void drawClock(Canvas *canvas) {
+    char *filename = "./assets/images/dusk.png";
+
+    Image dusk = Image(filename);
 }
 
 // get a random number between 0 and 255
@@ -74,18 +121,14 @@ int main(int argc, char* argv[]) {
     signal(SIGTERM, InterruptHandler);
     signal(SIGINT, InterruptHandler);
 
-    Color background = randomColor();
+    // Color background = randomColor();
 
-    while(true) {
-        if (program_interrupted) {
-            break;
-        }
+    while (!program_interrupted) {
+        drawClock(canvas);
 
-        Color foreground = randomColor();
-
-        draw(canvas, background, foreground);
-
-        background = foreground;
+        // Color foreground = randomColor();
+        // draw(canvas, background, foreground);
+        // background = foreground;
     }
     
     canvas->Clear();
