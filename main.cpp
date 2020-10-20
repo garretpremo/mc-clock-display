@@ -23,29 +23,29 @@ static void InterruptHandler(int signo) {
               << "Ctrl + C detected, exiting..." << std::endl;
 }
 
-class Color {
+class MColor {
     int r, g, b, a;
 
-    Color(int red, int green, int blue, int alpha) {
+    MColor(int red, int green, int blue, int alpha) {
         r = normalize(red);
         g = normalize(green);
         b = normalize(blue);
         a = alpha;
     }
 
-    static Color White() {
+    static MColor White() {
         return Color(255, 255, 255, 255);
     }
 
-    static Color Red() {
+    static MColor Red() {
         return Color(255, 0, 0, 255);
     }
 
-    static Color Green() {
+    static MColor Green() {
         return Color(0, 255, 0, 255);
     }
 
-    static Color Blue() {
+    static MColor Blue() {
         return Color(0, 0, 255, 255);
     }
 };
@@ -66,7 +66,7 @@ public:
         a = normalize(alpha);
     }
 
-    Pixel(Color color) {
+    Pixel(MColor color) {
         Pixel(color.r, color.g, color.b, color.a);
     }
 
@@ -269,7 +269,7 @@ public:
         pixelMatrix = _pixelMatrix;
     }
 
-    static Number One(Color c) {
+    static Number One(MColor c) {
         std::vector<std::vector<Pixel>> matrix = { 
             { Pixel::Empty(), Pixel::From(c), Pixel::Empty() },  //  *
             { Pixel::From(c), Pixel::From(c), Pixel::Empty() },  // **
@@ -280,7 +280,7 @@ public:
         return Number(matrix);
     }
 
-    static Number Two(Color c) {
+    static Number Two(MColor c) {
         std::vector<std::vector<Pixel>> matrix = { 
             { Pixel::From(c), Pixel::From(c), Pixel::From(c) },  // ***
             { Pixel::Empty(), Pixel::Empty(), Pixel::From(c) },  //   *
@@ -291,7 +291,7 @@ public:
         return Number(matrix);
     }
 
-    static Number Three(Color c) {
+    static Number Three(MColor c) {
         std::vector<std::vector<Pixel>> matrix = { 
             { Pixel::From(c), Pixel::From(c), Pixel::From(c) },  // ***
             { Pixel::Empty(), Pixel::Empty(), Pixel::From(c) },  //   *
@@ -302,7 +302,7 @@ public:
         return Number(matrix);
     }
 
-    static Number Four(Color c) {
+    static Number Four(MColor c) {
         std::vector<std::vector<Pixel>> matrix = { 
             { Pixel::From(c), Pixel::Empty(), Pixel::From(c) },  // * *
             { Pixel::From(c), Pixel::Empty(), Pixel::From(c) },  // * *
@@ -313,7 +313,7 @@ public:
         return Number(matrix);
     }
 
-    static Number Five(Color c) {
+    static Number Five(MColor c) {
         std::vector<std::vector<Pixel>> matrix = { 
             { Pixel::From(c), Pixel::From(c), Pixel::From(c) },  // ***
             { Pixel::From(c), Pixel::Empty(), Pixel::Empty() },  // * 
@@ -324,7 +324,7 @@ public:
         return Number(matrix);
     }
 
-    static Number Six(Color c) {
+    static Number Six(MColor c) {
         std::vector<std::vector<Pixel>> matrix = { 
             { Pixel::From(c), Pixel::From(c), Pixel::From(c) },  // ***
             { Pixel::From(c), Pixel::Empty(), Pixel::Empty() },  // * 
@@ -335,7 +335,7 @@ public:
         return Number(matrix);
     }
 
-    static Number Seven(Color c) {
+    static Number Seven(MColor c) {
         std::vector<std::vector<Pixel>> matrix = { 
             { Pixel::From(c), Pixel::From(c), Pixel::From(c) },  // ***
             { Pixel::Empty(), Pixel::Empty(), Pixel::From(c) },  //   *
@@ -346,7 +346,7 @@ public:
         return Number(matrix);
     }
 
-    static Number Eight(Color c) {
+    static Number Eight(MColor c) {
         std::vector<std::vector<Pixel>> matrix = { 
             { Pixel::From(c), Pixel::From(c), Pixel::From(c) },  // ***
             { Pixel::From(c), Pixel::Empty(), Pixel::From(c) },  // * *
@@ -357,7 +357,7 @@ public:
         return Number(matrix);
     }
 
-    static Number Nine(Color c) {
+    static Number Nine(MColor c) {
         std::vector<std::vector<Pixel>> matrix = { 
             { Pixel::From(c), Pixel::From(c), Pixel::From(c) },  // ***
             { Pixel::From(c), Pixel::Empty(), Pixel::From(c) },  // * *
@@ -368,7 +368,7 @@ public:
         return Number(matrix);
     }
 
-    static Number Zero(Color c) {
+    static Number Zero(MColor c) {
         std::vector<std::vector<Pixel>> matrix = { 
             { Pixel::From(c), Pixel::From(c), Pixel::From(c) },  // ***
             { Pixel::From(c), Pixel::Empty(), Pixel::From(c) },  // * *
@@ -383,16 +383,16 @@ public:
 class Colon: public PixelMatrix {
 
 public:
-    Colon(Color c) {
+    Colon(MColor c) {
         pixelMatrix = {
-            { Pixel.Empty() },  // 
-            { Pixel.From(c) },  // *
-            { Pixel.Empty() },  //
-            { Pixel.From(c) },  // *
-            { Pixel.Empty() }   //
+            { Pixel::Empty() },  // 
+            { Pixel::From(c) },  // *
+            { Pixel::Empty() },  //
+            { Pixel::From(c) },  // *
+            { Pixel::Empty() }   //
         };
     }
-}
+};
 
 void draw(Canvas *canvas, Color background, Color foreground) {
 
@@ -430,7 +430,7 @@ int main(int argc, char* argv[]) {
 
     srand(time(NULL));
 
-    Color defaultTextColor = Color::Blue();
+    MColor defaultTextColor = MColor::Blue();
 
     // define matrix defaults
     RGBMatrix::Options defaults;
