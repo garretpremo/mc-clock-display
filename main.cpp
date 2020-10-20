@@ -28,6 +28,10 @@ class Pixel {
 public:
     int r, g, b, a;
 
+    Pixel() {
+        r = 0, g = 0, b = 0, a = 0;
+    }
+
     Pixel(int red, int green, int blue, int alpha) {
         r = normalize(red);
         g = normalize(green);
