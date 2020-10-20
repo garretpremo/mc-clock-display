@@ -33,9 +33,6 @@ public:
         printStatistics();
     }
 
-    inline Image* CreateImageFromFilename(char* _filename) {
-        Image image = Image(_filename);
-    }
 
 private:
     void initialize() {
@@ -156,7 +153,7 @@ int main(int argc, char* argv[]) {
     defaults.brightness = 40;
 
     Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
-    Image *dusk = Image::CreateImageFromFilename("./assets/images/dusk.png");
+    Image dusk = Image("./assets/images/dusk.png");
 
     if (canvas == NULL) {
         return EXIT_FAILURE;
@@ -168,7 +165,7 @@ int main(int argc, char* argv[]) {
     // Color background = randomColor();
 
     while (!program_interrupted) {
-        drawClock(canvas, dusk);
+        drawClock(canvas, &dusk);
 
         // Color foreground = randomColor();
         // draw(canvas, background, foreground);
