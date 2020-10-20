@@ -70,9 +70,10 @@ public:
 
     ~Image() {
         if (rowPointers != NULL) {
-            for (int row = 0; row < height; row++) {
-                free(rowPointers[row]);
-                delete rowPointers[row];
+            for (int y = 0; y < height; y++) {
+                png_bytep row = rowPointers[y];
+                free(row);
+                delete row;
             }
 
             free(rowPointers);
