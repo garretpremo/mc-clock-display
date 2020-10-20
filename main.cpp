@@ -218,6 +218,11 @@ void drawImage(Canvas *canvas, Image *image) {
 
         for (int x = 0; x < image->width; x++) {
             Pixel pixel = pixelRow[x];
+
+            if (pixel.isBlack()) {
+                continue;
+            }
+
             canvas->SetPixel(x, y, pixel.r, pixel.g, pixel.b);
 
             // png_bytep px = &(row[x * 4]);
