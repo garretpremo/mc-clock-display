@@ -146,7 +146,7 @@ void draw(Canvas *canvas, Color background, Color foreground) {
 
 void drawClock(Canvas* canvas, Image* image) {
 
-    canvas->Fill(100, 100, 100);
+    canvas->Fill(0, 0, 255);
 
     for(int y = 0; y < image->height; y++) {
         png_bytep row = image->rowPointers[y];
