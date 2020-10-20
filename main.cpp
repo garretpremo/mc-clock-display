@@ -60,7 +60,7 @@ public:
     png_byte colorType;
     png_byte bitDepth;
     png_bytep *rowPointers = NULL;
-    std::vector<std::vector<Pixel>> pixelMatrix = NULL;
+    std::vector<std::vector<Pixel>> pixelMatrix;
 
     Image(const char *_filename) {
         filename = _filename;
@@ -226,7 +226,8 @@ void drawImage(Canvas *canvas, Image *image) {
 
             png_bytep px = &(row[x * 4]);
 
-            canvas->SetPixel(x, y, pixel.r, pixel.g, pixel.b);
+            canvas->SetPixel(x, y, px[0], px[1], px[2]);
+            // canvas->SetPixel(x, y, pixel.r, pixel.g, pixel.b);
         }
     }
     usleep(1 * 1000000);
