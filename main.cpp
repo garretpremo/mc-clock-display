@@ -60,7 +60,7 @@ public:
     png_byte colorType;
     png_byte bitDepth;
     png_bytep *rowPointers = NULL;
-    std::vector<std::vector<Pixel>> pixelMatrix;
+    std::vector<std::vector<Pixel>> pixelMatrix = {};
 
     Image(const char *_filename) {
         filename = _filename;
@@ -78,16 +78,6 @@ public:
             free(rowPointers);
             delete rowPointers;
         }
-
-        // if (rows != NULL) {
-        //     for (int row = 0; row < height; row++) {
-        //         free(rows[row]);
-        //         delete rows[row];
-        //     }
-
-        //     free(rows);
-        //     delete rows;
-        // }
     }
 
 private:
@@ -134,24 +124,29 @@ private:
 
         // initialize rows
         rowPointers = (png_bytep *)malloc(sizeof(png_bytep) * height);
-        // rows = (Pixel**)malloc(sizeof(Pixel*) * height);
 
         for (int y = 0; y < height; y++) {
-
             png_byte *byte = (png_byte *)malloc(png_get_rowbytes(png, info));
-            // Pixel* pixels = (Pixel*)malloc(sizeof(Pixel) * width);
-
             rowPointers[y] = byte;
-
-            // for (int x = 0; x < width; x++) {
-            //     png_bytep px = &(byte[x * 4]);
-            //     pixels[x] = Pixel(px[0], px[1], px[2]);
-            // }
-
-            // rows[y] = pixels;
         }
 
         png_read_image(png, rowPointers);
+
+        // initialize matrix of Pixels
+        for (int y = 0; y < height; y++) {
+            std::vector<Pixel> pixelRow = {};
+            png_bytep row = rowPointers[y];
+
+            for (int x = 0; x < image->width; x++) {
+
+                png_bytep px = &(row[x * 4]);
+
+                Pixel pixel = Pixel(px[0], px[1], px[2]);
+                pixelRow.push_back(pixel);
+            }
+
+            pixelMatrix.push_back(pixelRow);
+        }
 
         fclose(file);
         png_destroy_read_struct(&png, &info, NULL);
@@ -211,23 +206,23 @@ void draw(Canvas *canvas, Color background, Color foreground) {
 
 void drawImage(Canvas *canvas, Image *image) {
 
-    canvas->Fill(0, 0, 255);
+    canvas->Fill(0, 0, 150);
 
     for (int y = 0; y < image->height; y++) {
         if (program_interrupted) {
             return;
         }
 
+        std::vector<Pixel> pixelRow = image->pixelMatrix[y];
         // Pixel *row = image->rows[y];
         png_bytep row = image->rowPointers[y];
 
         for (int x = 0; x < image->width; x++) {
-            // Pixel pixel = row[x];
+            Pixel pixel = pixelRow[x];
+            canvas->SetPixel(x, y, pixel.r, pixel.g, pixel.b);
 
-            png_bytep px = &(row[x * 4]);
-
-            canvas->SetPixel(x, y, px[0], px[1], px[2]);
-            // canvas->SetPixel(x, y, pixel.r, pixel.g, pixel.b);
+            // png_bytep px = &(row[x * 4]);
+            // canvas->SetPixel(x, y, px[0], px[1], px[2]);
         }
     }
     usleep(1 * 1000000);
