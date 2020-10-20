@@ -146,7 +146,7 @@ void draw(Canvas *canvas, Color background, Color foreground) {
 
 void drawClock(Canvas* canvas, Image* image) {
 
-    canvas->Fill(0, 0, 255);
+    // canvas->Fill(0, 0, 255);
 
     for(int y = 0; y < image->height; y++) {
         png_bytep row = image->rowPointers[y];
@@ -156,7 +156,7 @@ void drawClock(Canvas* canvas, Image* image) {
 
             canvas->SetPixel(x, y, px[0], px[1], px[2]);
     }
-    
+
     usleep(1 * 1000);  // wait a little to slow down things.
   }
 }
@@ -185,7 +185,10 @@ int main(int argc, char* argv[]) {
     defaults.brightness = 40;
 
     Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
+    Image dawn = Image("./assets/images/dawn.png");
+    Image noon = Image("./assets/images/noon.png");
     Image dusk = Image("./assets/images/dusk.png");
+    Image midnight = Image("./assets/images/midnight.png");
 
     if (canvas == NULL) {
         return EXIT_FAILURE;
@@ -197,7 +200,10 @@ int main(int argc, char* argv[]) {
     // Color background = randomColor();
 
     while (!program_interrupted) {
+        drawClock(canvas, &dawn);
+        drawClock(canvas, &noon);
         drawClock(canvas, &dusk);
+        drawClock(canvas, &midnight);
 
         // Color foreground = randomColor();
         // draw(canvas, background, foreground);
