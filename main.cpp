@@ -23,6 +23,33 @@ static void InterruptHandler(int signo) {
               << "Ctrl + C detected, exiting..." << std::endl;
 }
 
+class Color {
+    int r, g, b, a;
+
+    Color(int red, int green, int blue, int alpha) {
+        r = normalize(red);
+        g = normalize(green);
+        b = normalize(blue);
+        a = alpha;
+    }
+
+    static Color White() {
+        return Color(255, 255, 255, 255);
+    }
+
+    static Color Red() {
+        return Color(255, 0, 0, 255);
+    }
+
+    static Color Green() {
+        return Color(0, 255, 0, 255);
+    }
+
+    static Color Blue() {
+        return Color(0, 0, 255, 255);
+    }
+};
+
 class Pixel {
 
 public:
@@ -36,15 +63,19 @@ public:
         r = normalize(red);
         g = normalize(green);
         b = normalize(blue);
-        a = alpha;
+        a = normalize(alpha);
+    }
+
+    Pixel(Color color) {
+        Pixel(color.r, color.g, color.b, color.a);
     }
 
     static Pixel Empty() {
         return Pixel();
     }
 
-    static Pixel White() {
-        return Pixel(255, 255, 255, 255);
+    static Pixel From(Color color) {
+        return Pixel(color);
     }
 
     void print() {
@@ -238,28 +269,130 @@ public:
         pixelMatrix = _pixelMatrix;
     }
 
-    static Number One() {
+    static Number One(Color c) {
         std::vector<std::vector<Pixel>> matrix = { 
-            { Pixel::Empty(), Pixel::White(), Pixel::Empty() },  //  *
-            { Pixel::White(), Pixel::White(), Pixel::Empty() },  // **
-            { Pixel::Empty(), Pixel::White(), Pixel::Empty() },  //  *
-            { Pixel::Empty(), Pixel::White(), Pixel::Empty() },  //  *
-            { Pixel::White(), Pixel::White(), Pixel::White() }   // ***
+            { Pixel::Empty(), Pixel::From(c), Pixel::Empty() },  //  *
+            { Pixel::From(c), Pixel::From(c), Pixel::Empty() },  // **
+            { Pixel::Empty(), Pixel::From(c), Pixel::Empty() },  //  *
+            { Pixel::Empty(), Pixel::From(c), Pixel::Empty() },  //  *
+            { Pixel::From(c), Pixel::From(c), Pixel::From(c) }   // ***
         };
         return Number(matrix);
     }
 
-    static Number Two() {
+    static Number Two(Color c) {
         std::vector<std::vector<Pixel>> matrix = { 
-            { Pixel::White(), Pixel::White(), Pixel::White() },  // ***
-            { Pixel::Empty(), Pixel::Empty(), Pixel::White() },  //   *
-            { Pixel::White(), Pixel::White(), Pixel::White() },  // ***
-            { Pixel::White(), Pixel::Empty(), Pixel::Empty() },  // *
-            { Pixel::White(), Pixel::White(), Pixel::White() }   // ***
+            { Pixel::From(c), Pixel::From(c), Pixel::From(c) },  // ***
+            { Pixel::Empty(), Pixel::Empty(), Pixel::From(c) },  //   *
+            { Pixel::From(c), Pixel::From(c), Pixel::From(c) },  // ***
+            { Pixel::From(c), Pixel::Empty(), Pixel::Empty() },  // *
+            { Pixel::From(c), Pixel::From(c), Pixel::From(c) }   // ***
+        };
+        return Number(matrix);
+    }
+
+    static Number Three(Color c) {
+        std::vector<std::vector<Pixel>> matrix = { 
+            { Pixel::From(c), Pixel::From(c), Pixel::From(c) },  // ***
+            { Pixel::Empty(), Pixel::Empty(), Pixel::From(c) },  //   *
+            { Pixel::From(c), Pixel::From(c), Pixel::From(c) },  // ***
+            { Pixel::Empty(), Pixel::Empty(), Pixel::From(c) },  //   *
+            { Pixel::From(c), Pixel::From(c), Pixel::From(c) }   // ***
+        };
+        return Number(matrix);
+    }
+
+    static Number Four(Color c) {
+        std::vector<std::vector<Pixel>> matrix = { 
+            { Pixel::From(c), Pixel::Empty(), Pixel::From(c) },  // * *
+            { Pixel::From(c), Pixel::Empty(), Pixel::From(c) },  // * *
+            { Pixel::From(c), Pixel::From(c), Pixel::From(c) },  // ***
+            { Pixel::Empty(), Pixel::Empty(), Pixel::From(c) },  //   *
+            { Pixel::Empty(), Pixel::Empty(), Pixel::From(c) }   //   *
+        };
+        return Number(matrix);
+    }
+
+    static Number Five(Color c) {
+        std::vector<std::vector<Pixel>> matrix = { 
+            { Pixel::From(c), Pixel::From(c), Pixel::From(c) },  // ***
+            { Pixel::From(c), Pixel::Empty(), Pixel::Empty() },  // * 
+            { Pixel::From(c), Pixel::From(c), Pixel::From(c) },  // ***
+            { Pixel::Empty(), Pixel::Empty(), Pixel::From(c) },  //   *
+            { Pixel::From(c), Pixel::From(c), Pixel::From(c) }   // ***
+        };
+        return Number(matrix);
+    }
+
+    static Number Six(Color c) {
+        std::vector<std::vector<Pixel>> matrix = { 
+            { Pixel::From(c), Pixel::From(c), Pixel::From(c) },  // ***
+            { Pixel::From(c), Pixel::Empty(), Pixel::Empty() },  // * 
+            { Pixel::From(c), Pixel::From(c), Pixel::From(c) },  // ***
+            { Pixel::From(c), Pixel::Empty(), Pixel::From(c) },  // * *
+            { Pixel::From(c), Pixel::From(c), Pixel::From(c) }   // ***
+        };
+        return Number(matrix);
+    }
+
+    static Number Seven(Color c) {
+        std::vector<std::vector<Pixel>> matrix = { 
+            { Pixel::From(c), Pixel::From(c), Pixel::From(c) },  // ***
+            { Pixel::Empty(), Pixel::Empty(), Pixel::From(c) },  //   *
+            { Pixel::Empty(), Pixel::Empty(), Pixel::From(c) },  //   *
+            { Pixel::Empty(), Pixel::Empty(), Pixel::From(c) },  //   *
+            { Pixel::Empty(), Pixel::Empty(), Pixel::From(c) }   //   *
+        };
+        return Number(matrix);
+    }
+
+    static Number Eight(Color c) {
+        std::vector<std::vector<Pixel>> matrix = { 
+            { Pixel::From(c), Pixel::From(c), Pixel::From(c) },  // ***
+            { Pixel::From(c), Pixel::Empty(), Pixel::From(c) },  // * *
+            { Pixel::From(c), Pixel::From(c), Pixel::From(c) },  // ***
+            { Pixel::From(c), Pixel::Empty(), Pixel::From(c) },  // * *
+            { Pixel::From(c), Pixel::From(c), Pixel::From(c) }   // ***
+        };
+        return Number(matrix);
+    }
+
+    static Number Nine(Color c) {
+        std::vector<std::vector<Pixel>> matrix = { 
+            { Pixel::From(c), Pixel::From(c), Pixel::From(c) },  // ***
+            { Pixel::From(c), Pixel::Empty(), Pixel::From(c) },  // * *
+            { Pixel::From(c), Pixel::From(c), Pixel::From(c) },  // ***
+            { Pixel::Empty(), Pixel::Empty(), Pixel::From(c) },  //   *
+            { Pixel::From(c), Pixel::From(c), Pixel::From(c) }   // ***
+        };
+        return Number(matrix);
+    }
+
+    static Number Zero(Color c) {
+        std::vector<std::vector<Pixel>> matrix = { 
+            { Pixel::From(c), Pixel::From(c), Pixel::From(c) },  // ***
+            { Pixel::From(c), Pixel::Empty(), Pixel::From(c) },  // * *
+            { Pixel::From(c), Pixel::Empty(), Pixel::From(c) },  // * *
+            { Pixel::From(c), Pixel::Empty(), Pixel::From(c) },  // * *
+            { Pixel::From(c), Pixel::From(c), Pixel::From(c) }   // ***
         };
         return Number(matrix);
     }
 };
+
+class Colon: public PixelMatrix {
+
+public:
+    Colon(Color c) {
+        pixelMatrix = {
+            { Pixel.Empty() },  // 
+            { Pixel.From(c) },  // *
+            { Pixel.Empty() },  //
+            { Pixel.From(c) },  // *
+            { Pixel.Empty() }   //
+        };
+    }
+}
 
 void draw(Canvas *canvas, Color background, Color foreground) {
 
@@ -297,6 +430,8 @@ int main(int argc, char* argv[]) {
 
     srand(time(NULL));
 
+    Color defaultTextColor = Color::Blue();
+
     // define matrix defaults
     RGBMatrix::Options defaults;
     defaults.hardware_mapping = "regular";
@@ -325,8 +460,11 @@ int main(int argc, char* argv[]) {
 
         canvas->Fill(150, 60, 0);
 
-        Number::One().draw(canvas, 16, 0);
-        Number::Two().draw(canvas, 19, 0);
+        Number::One(defaultTextColor).draw(canvas, 15, 0);
+        Number::Two(defaultTextColor).draw(canvas, 19, 0);
+        Colon(defaultTextColor).draw(canvas, 21, 0);
+        Number::Three(defaultTextColor).draw(canvas, 25, 0);
+        Number::Four(defaultTextColor).draw(canvas, 29, 0);
         
         dawn.draw(canvas);
         noon.draw(canvas);
