@@ -39,12 +39,20 @@ public:
         a = alpha;
     }
 
+    static Pixel Empty() {
+        return Pixel();
+    }
+
+    static Pixel White() {
+        return Pixel(255, 255, 255, 255);
+    }
+
     void print() {
         std::cout << "(" << r << ", " << g << ", " << b << ", " << a << ")" << std::endl;
     }
 
     bool isInvisible() {
-        return a < 100;
+        return a == 0;
     }
 
 private:
@@ -59,8 +67,36 @@ private:
     }
 };
 
+class PixelMatrix {
+
+public:
+    std::vector<std::vector<Pixel>> pixelMatrix;
+
+    void draw(Canvas* canvas, int startX, int startY) {
+        for (int y = 0; y < height; y++) {
+            if (program_interrupted) {
+                return;
+            }
+
+            std::vector<Pixel> pixelRow = pixelMatrix[y];
+
+            for (int x = 0; x < width; x++) {
+                Pixel pixel = pixelRow[x];
+
+                if (!pixel.isInvisible()) {
+                    canvas->SetPixel(x + startX, y + startY, pixel.r, pixel.g, pixel.b);
+                }
+            }
+        }
+    }
+
+    void draw(Canvas* canvas) {
+        draw(canvas, 0, 0);
+    }
+}
+
 // PNG Image wrapper for pnglib
-class Image {
+class Image: public PixelMatrix {
 
 public:
     const char *filename;
@@ -69,7 +105,7 @@ public:
     png_byte colorType;
     png_byte bitDepth;
     png_bytep *rowPointers = NULL;
-    std::vector<std::vector<Pixel>> pixelMatrix = {};
+    // std::vector<std::vector<Pixel>> pixelMatrix = {};
     int pixelOutputted;
 
     Image(const char *_filename) {
@@ -90,29 +126,23 @@ public:
         }
     }
 
-    void draw(Canvas* canvas) {
-        for (int y = 0; y < height; y++) {
-            if (program_interrupted) {
-                return;
-            }
+    // void draw(Canvas* canvas) {
+    //     for (int y = 0; y < height; y++) {
+    //         if (program_interrupted) {
+    //             return;
+    //         }
 
-            std::vector<Pixel> pixelRow = pixelMatrix[y];
+    //         std::vector<Pixel> pixelRow = pixelMatrix[y];
 
-            for (int x = 0; x < width; x++) {
-                Pixel pixel = pixelRow[x];
+    //         for (int x = 0; x < width; x++) {
+    //             Pixel pixel = pixelRow[x];
 
-                if (pixelOutputted == 0) {
-                    pixel.print();
-                }
-
-                if (!pixel.isInvisible()) {
-                    canvas->SetPixel(x, y, pixel.r, pixel.g, pixel.b);
-                }
-            }
-        }
-
-        pixelOutputted++;
-    }
+    //             if (!pixel.isInvisible()) {
+    //                 canvas->SetPixel(x, y, pixel.r, pixel.g, pixel.b);
+    //             }
+    //         }
+    //     }
+    // }
 
 private:
     void initialize() {
@@ -215,15 +245,37 @@ private:
     }
 };
 
-// class Number {
+class Number: public PixelMatrix {
 
-// public:
-//     std::vector<std::vector<Pixel>> pixelMatrix;
+public:
+    // std::vector<std::vector<Pixel>> pixelMatrix = {};
 
-//     Number(int number) {
+    Number(std::vector<std::vector<Pixel>> _pixelMatrix) {
+        pixelMatrix = _pixelMatrix;
+    }
 
-//     }
-// }
+    static Number One() {
+        std::vector<std::vector<Pixel>> matrix = { 
+            { Pixel::Empty(), Pixel::White(), Pixel::Empty() },  //  *
+            { Pixel::White(), Pixel::White(), Pixel::Empty() },  // **
+            { Pixel::Empty(), Pixel::White(), Pixel::Empty() },  //  *
+            { Pixel::Empty(), Pixel::White(), Pixel::Empty() },  //  *
+            { Pixel::White(), Pixel::White(), Pixel::White() }   // ***
+        };
+        return Number(matrix);
+    }
+
+    static Number Two() {
+        std::vector<std::vector<Pixel>> matrix = { 
+            { Pixel::White(), Pixel::White(), Pixel::White() },  // ***
+            { Pixel::Empty(), Pixel::Empty(), Pixel::White() },  //   *
+            { Pixel::White(), Pixel::White(), Pixel::White() },  // ***
+            { Pixel::White(), Pixel::Empty(), Pixel::Empty() },  // *
+            { Pixel::White(), Pixel::White(), Pixel::White() }   // ***
+        };
+        return Number(matrix);
+    }
+}
 
 void draw(Canvas *canvas, Color background, Color foreground) {
 
