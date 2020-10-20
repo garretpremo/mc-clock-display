@@ -72,7 +72,7 @@ class PixelMatrix {
 public:
     std::vector<std::vector<Pixel>> pixelMatrix;
 
-    virtual void draw(Canvas* canvas, int startX, int startY) {
+    void draw(Canvas* canvas, int startX, int startY) {
         for (uint y = 0; y < pixelMatrix.size(); y++) {
             if (program_interrupted) {
                 return;
@@ -90,7 +90,7 @@ public:
         }
     }
 
-    virtual void draw(Canvas* canvas) {
+    void draw(Canvas* canvas) {
         draw(canvas, 0, 0);
     }
 };
@@ -122,7 +122,7 @@ public:
         }
     }
 
-    virtual void drawImage(Canvas* canvas) {
+    void drawImage(Canvas* canvas) {
         PixelMaxtrix::draw(canvas);
         usleep(1 * 1000000);
     }
@@ -304,10 +304,10 @@ int main(int argc, char* argv[]) {
     defaults.brightness = 100;
 
     Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
-    Image dawn = new Image("./assets/images/dawn.png");
-    Image noon = new Image("./assets/images/noon.png");
-    Image dusk = new Image("./assets/images/dusk.png");
-    Image midnight = new Image("./assets/images/midnight.png");
+    Image dawn = Image("./assets/images/dawn.png");
+    Image noon = Image("./assets/images/noon.png");
+    Image dusk = Image("./assets/images/dusk.png");
+    Image midnight = Image("./assets/images/midnight.png");
 
     if (canvas == NULL) {
         return EXIT_FAILURE;
@@ -337,9 +337,5 @@ int main(int argc, char* argv[]) {
 
     canvas->Clear();
     delete canvas;
-    delete dawn;
-    delete noon;
-    delete dusk;
-    delete midnight;
     return EXIT_SUCCESS;
 }
