@@ -16,10 +16,10 @@ using rgb_matrix::Canvas;
 volatile bool program_interrupted = false;
 static void InterruptHandler(int signo) {
   program_interrupted = true;
-  std::cout << "Ctrl + C detected, exiting..." << std::endl;
+  std::cout << std::endl << "Ctrl + C detected, exiting..." << std::endl;
 }
 
-void draw(Canvas *canvas) {
+void draw(Canvas *canvas, Color colorA, Color colorB) {
 
     canvas->Fill(255, 180, 180);
 
@@ -40,10 +40,21 @@ void draw(Canvas *canvas) {
     }
 }
 
-int main(int argc, char* argv[]) {
-    std::cout << std::endl << "Beginning program...\nPress Ctrl + C to exit." << std::endl;
+// get a random number between 0 and 255
+Color randomColor() {
+    int r = rand() % (MAX_COLOR_VALUE + 1);
+    int g = rand() % (MAX_COLOR_VALUE + 1);
+    int b = rand() % (MAX_COLOR_VALUE + 1);
 
-    // define defaults
+    return Color(r, g, b);
+}
+
+int main(int argc, char* argv[]) {
+    std::cout << "Beginning program...\nPress Ctrl + C to exit." << std::endl;
+
+    srand (time(NULL));
+
+    // define matrix defaults
     RGBMatrix::Options defaults;
     defaults.hardware_mapping = "regular";
     defaults.rows = 16;
@@ -66,42 +77,11 @@ int main(int argc, char* argv[]) {
             break;
         }
 
-        draw(canvas);
+        Color colorA = randomColor();
+        Color colorB = randomColor();
+
+        draw(canvas, colorA, colorB);
     }
-    // int i = 0;
-
-    // ssize_t frame_size = canvas->width() * canvas->height() * 3;
-    // uint8_t buf[frame_size];
-
-    // while (1) {
-    //     struct timespec start;
-    //     timespec_get(&start, TIME_UTC);
-
-    //     // handle interruptions
-    //     ssize_t nread;
-    //     ssize_t total_nread = 0;
-    //     while ((nread = read(STDIN_FILENO, &buf[total_nread], frame_size - total_nread)) > 0) {
-    //         if (program_interrupted) {
-    //             return EXIT_FAILURE;
-    //         }
-    //         total_nread += nread;
-    //     }
-        
-    //     if (total_nread < frame_size){
-    //         break;
-    //     }
-
-    //     draw(canvas, i++);
-
-    //     // throttle the loop so we only run 60 iterations per second
-    //     struct timespec end;
-    //     timespec_get(&end, TIME_UTC);
-    //     long tudiff = (end.tv_nsec / 1000 + end.tv_sec * 1000000) - (start.tv_nsec / 1000 + start.tv_sec * 1000000);
-
-    //     if (tudiff < 1000000l / FPS) {
-    //         usleep(1000000l / FPS - tudiff);
-    //     }
-    // }
     
     canvas->Clear();
     delete canvas;
