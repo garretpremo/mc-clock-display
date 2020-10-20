@@ -122,7 +122,7 @@ public:
         }
     }
 
-    void drawImage(Canvas* canvas) {
+    void draw(Canvas* canvas) {
         PixelMatrix::draw(canvas);
         usleep(1 * 1000000);
     }
