@@ -97,7 +97,7 @@ public:
             for (int x = 0; x < width; x++) {
                 Pixel pixel = pixelRow[x];
 
-                if (pixelOutputted++ == 0) {
+                if (pixelOutputted == 0) {
                     pixel.print();
                 }
 
@@ -106,6 +106,8 @@ public:
                 }
             }
         }
+
+        pixelOutputted++;
     }
 
 private:
@@ -245,6 +247,10 @@ void drawImage(Canvas *canvas, Image *image) {
     canvas->Fill(150, 60, 0);
 
     image->draw(canvas);
+
+    if (program_interrupted) {
+        return;
+    }
 
     usleep(1 * 1000000);
 }
