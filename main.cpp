@@ -29,15 +29,15 @@ public:
 
 private:
     void initialize() {
-        FILE *file = fopen(filename, "rb");
+        FILE* file = fopen(filename, "rb");
 
         if (!file) {
             fclose(file);
-            return;
+            return ERROR;
         }
 
         int headerSize = 8;
-        char *header = (char*) malloc(sizeof(char) * headerSize);
+        const unsigned char* header = (const unsigned char*) malloc(sizeof(const unsigned char) * headerSize);
 
         fread(header, 1, headerSize, file);
         bool isPng = !png_sig_cmp(header, 0, headerSize);
@@ -46,10 +46,13 @@ private:
             std::cerr << "Error - Could not open file - File is not of type 'png'." << std::endl;
             fclose(file);
             free(header);
-            return;
+            return ERROR;
         }
 
-        png_structp pngPtr = png_create_read_struct(PNG_LIBPNG_VER_STRING, (png_voidp)user_error_ptr, user_error_fn, user_warning_fn);
+        png_structp pngPtr = png_create_read_struct(PNG_LIBPNG_VER_STRING, (png_voidp)png_error_ptr);
+        if (!png_ptr) {
+            return ERROR;
+        }
 
         fclose(file);
         free(header);
