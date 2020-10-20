@@ -144,21 +144,18 @@ void draw(Canvas *canvas, Color background, Color foreground) {
     }
 }
 
-void drawClock(Canvas* canvas, Image* image) {
-
-    // canvas->Fill(0, 0, 255);
-
-    for(int y = 0; y < image->height; y++) {
+void drawImage(Canvas* canvas, Image* image) {
+    for (int y = 0; y < image->height; y++) {
         png_bytep row = image->rowPointers[y];
         
-        for(int x = 0; x < image->width; x++) {
+        for (int x = 0; x < image->width; x++) {
             png_bytep px = &(row[x * 4]);
 
             canvas->SetPixel(x, y, px[0], px[1], px[2]);
-    }
+        }
 
-    usleep(1 * 1000);  // wait a little to slow down things.
-  }
+        usleep(1 * 100000);  // wait a little to slow down things.
+    }
 }
 
 // get a random number between 0 and 255
@@ -200,10 +197,10 @@ int main(int argc, char* argv[]) {
     // Color background = randomColor();
 
     while (!program_interrupted) {
-        drawClock(canvas, &dawn);
-        drawClock(canvas, &noon);
-        drawClock(canvas, &dusk);
-        drawClock(canvas, &midnight);
+        drawImage(canvas, &dawn);
+        drawImage(canvas, &noon);
+        drawImage(canvas, &dusk);
+        drawImage(canvas, &midnight);
 
         // Color foreground = randomColor();
         // draw(canvas, background, foreground);
