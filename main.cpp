@@ -124,7 +124,10 @@ public:
 
     void draw(Canvas* canvas) {
         PixelMatrix::draw(canvas);
-        usleep(1 * 1000000);
+
+        if (!program_interrupted) {
+            usleep(1 * 1000000);
+        }
     }
 
 private:
@@ -322,8 +325,8 @@ int main(int argc, char* argv[]) {
 
         canvas->Fill(150, 60, 0);
 
-        // Number::One().draw(canvas, 16, 0);
-        // Number::Two().draw(canvas, 19, 0);
+        Number::One().draw(canvas, 16, 0);
+        Number::Two().draw(canvas, 19, 0);
         
         dawn.draw(canvas);
         noon.draw(canvas);
