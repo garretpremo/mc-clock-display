@@ -93,7 +93,7 @@ public:
     void draw(Canvas* canvas) {
         draw(canvas, 0, 0);
     }
-}
+};
 
 // PNG Image wrapper for pnglib
 class Image: public PixelMatrix {
@@ -275,7 +275,7 @@ public:
         };
         return Number(matrix);
     }
-}
+};
 
 void draw(Canvas *canvas, Color background, Color foreground) {
 
