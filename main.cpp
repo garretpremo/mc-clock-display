@@ -72,15 +72,15 @@ class PixelMatrix {
 public:
     std::vector<std::vector<Pixel>> pixelMatrix;
 
-    void draw(Canvas* canvas, int startX, int startY) {
-        for (int y = 0; y < pixelMatrix.size(); y++) {
+    virtual void draw(Canvas* canvas, int startX, int startY) const override {
+        for (uint y = 0; y < pixelMatrix.size(); y++) {
             if (program_interrupted) {
                 return;
             }
 
             std::vector<Pixel> pixelRow = pixelMatrix[y];
 
-            for (int x = 0; x < pixelRow.size(); x++) {
+            for (uint x = 0; x < pixelRow.size(); x++) {
                 Pixel pixel = pixelRow[x];
 
                 if (!pixel.isInvisible()) {
@@ -88,11 +88,9 @@ public:
                 }
             }
         }
-
-        usleep(1 * 1000000);
     }
 
-    void draw(Canvas* canvas) {
+    virtual void draw(Canvas* canvas) const override {
         draw(canvas, 0, 0);
     }
 };
@@ -122,6 +120,11 @@ public:
 
             free(rowPointers);
         }
+    }
+
+    void draw() const override {
+        PixelMatrix::draw();
+        usleep(1 * 1000000);
     }
 
 private:
