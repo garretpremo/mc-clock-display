@@ -260,6 +260,10 @@ public:
     void draw(Canvas* canvas, int startX, int startY) const override {
         PixelMatrix::draw(canvas, startX, startY);
     }
+
+    void draw(Canvas* canvas) const override {
+        PixelMatrix::draw(canvas);
+    }
 };
 
 void draw(Canvas *canvas, Color background, Color foreground) {
