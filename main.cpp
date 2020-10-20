@@ -33,7 +33,7 @@ private:
 
         if (!file) {
             fclose(file);
-            return ERROR;
+            return;
         }
 
         int headerSize = 8;
@@ -46,12 +46,12 @@ private:
             std::cerr << "Error - Could not open file - File is not of type 'png'." << std::endl;
             fclose(file);
             free(header);
-            return ERROR;
+            return;
         }
 
         png_structp pngPtr = png_create_read_struct(PNG_LIBPNG_VER_STRING, (png_voidp)png_error_ptr);
         if (!png_ptr) {
-            return ERROR;
+            return;
         }
 
         fclose(file);
