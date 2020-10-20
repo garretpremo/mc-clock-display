@@ -22,8 +22,8 @@ class Image {
 public:
     char *filename;
 
-    Image(char *filename) {
-        this.filename = filename;
+    Image(char *_filename) {
+        filename = _filename;
         initialize();
     }
 
