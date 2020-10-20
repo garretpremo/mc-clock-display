@@ -440,9 +440,9 @@ int main(int argc, char* argv[]) {
     defaults.brightness = 100;
 
     Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
-    Image dawn = Image("./assets/images/dawn.png");
-    Image noon = Image("./assets/images/noon.png");
-    Image dusk = Image("./assets/images/dusk.png");
+    // Image dawn = Image("./assets/images/dawn.png");
+    // Image noon = Image("./assets/images/noon.png");
+    // Image dusk = Image("./assets/images/dusk.png");
     Image midnight = Image("./assets/images/midnight.png");
 
     if (canvas == NULL) {
@@ -460,13 +460,13 @@ int main(int argc, char* argv[]) {
 
         Number::One(defaultTextColor).draw(canvas, 15, 0);
         Number::Two(defaultTextColor).draw(canvas, 19, 0);
-        Colon(defaultTextColor).draw(canvas, 21, 0);
-        Number::Three(defaultTextColor).draw(canvas, 25, 0);
-        Number::Four(defaultTextColor).draw(canvas, 29, 0);
+        // Colon(defaultTextColor).draw(canvas, 21, 0);
+        // Number::Three(defaultTextColor).draw(canvas, 25, 0);
+        // Number::Four(defaultTextColor).draw(canvas, 29, 0);
         
-        dawn.draw(canvas);
-        noon.draw(canvas);
-        dusk.draw(canvas);
+        // dawn.draw(canvas);
+        // noon.draw(canvas);
+        // dusk.draw(canvas);
         midnight.draw(canvas);
 
         // Color foreground = randomColor();
