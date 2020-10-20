@@ -64,16 +64,12 @@ public:
         a = normalize(alpha);
     }
 
-    Pixel(MColor color) {
-        Pixel(color.r, color.g, color.b, color.a);
-    }
-
     static Pixel Empty() {
         return Pixel();
     }
 
     static Pixel From(MColor color) {
-        return Pixel(color);
+        return Pixel(color.r, color.g, color.b, color.a);
     }
 
     void print() {
