@@ -26,16 +26,21 @@ static void InterruptHandler(int signo) {
 class Pixel {
 
 public:
-    int r, g, b;
+    int r, g, b, a;
 
-    Pixel(int red, int green, int blue) {
+    Pixel(int red, int green, int blue, int alpha) {
         r = normalize(red);
         g = normalize(green);
         b = normalize(blue);
+        a = alpha;
     }
 
-    bool isBlack() {
-        return r == 0 && g == 0 && b == 0;
+    void print() {
+        std::cout << "(" << r << ", " << g << ", " << b << ", " << a << ")" << std::endl;
+    }
+
+    bool isInvisible() {
+        return a < 100;
     }
 
 private:
@@ -61,10 +66,12 @@ public:
     png_byte bitDepth;
     png_bytep *rowPointers = NULL;
     std::vector<std::vector<Pixel>> pixelMatrix = {};
+    int pixelOutputted;
 
     Image(const char *_filename) {
         filename = _filename;
         initialize();
+        pixelOutputted = 0;
         // printStatistics();
     }
 
@@ -76,6 +83,28 @@ public:
             }
 
             free(rowPointers);
+        }
+    }
+
+    draw(Canvas* canvas) {
+        for (int y = 0; y < height; y++) {
+            if (program_interrupted) {
+                return;
+            }
+
+            std::vector<Pixel> pixelRow = pixelMatrix[y];
+
+            for (int x = 0; x < width; x++) {
+                Pixel pixel = pixelRow[x];
+
+                if (pixelOutputted++ == 0) {
+                    pixel.print();
+                }
+
+                if (!pixel.isInvisible()) {
+                    canvas->SetPixel(x, y, pixel.r, pixel.g, pixel.b);
+                }
+            }
         }
     }
 
@@ -138,7 +167,7 @@ private:
             for (int x = 0; x < width; x++) {
                 png_bytep px = &(row[x * 4]);
 
-                Pixel pixel = Pixel(px[0], px[1], px[2]);
+                Pixel pixel = Pixel(px[0], px[1], px[2], px[3]);
                 pixelRow.push_back(pixel);
             }
 
@@ -180,6 +209,16 @@ private:
     }
 };
 
+// class Number {
+
+// public:
+//     std::vector<std::vector<Pixel>> pixelMatrix;
+
+//     Number(int number) {
+
+//     }
+// }
+
 void draw(Canvas *canvas, Color background, Color foreground) {
 
     canvas->Fill(background.r, background.g, background.b);
@@ -205,21 +244,8 @@ void drawImage(Canvas *canvas, Image *image) {
 
     canvas->Fill(150, 60, 0);
 
-    for (int y = 0; y < image->height; y++) {
-        if (program_interrupted) {
-            return;
-        }
+    image->draw(canvas);
 
-        std::vector<Pixel> pixelRow = image->pixelMatrix[y];
-
-        for (int x = 0; x < image->width; x++) {
-            Pixel pixel = pixelRow[x];
-
-            if (!pixel.isBlack()) {
-                canvas->SetPixel(x, y, pixel.r, pixel.g, pixel.b);
-            }
-        }
-    }
     usleep(1 * 1000000);
 }
 
