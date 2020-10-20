@@ -258,10 +258,13 @@ private:
 
 class Number: public PixelMatrix {
 
-public:
+private:
+
     Number(std::vector<std::vector<Pixel>> _pixelMatrix) {
         pixelMatrix = _pixelMatrix;
     }
+
+public:
 
     static Number One(MColor c) {
         std::vector<std::vector<Pixel>> matrix = { 
@@ -376,15 +379,22 @@ public:
 
 class Colon: public PixelMatrix {
 
+private:
+    Colon(std::vector<std::vector<Pixel>> _pixelMatrix) {
+        pixelMatrix = pixelMatrix;
+    }
+
 public:
-    Colon(MColor c) {
-        pixelMatrix = {
-            { Pixel::Empty() },  // 
-            { Pixel::From(c) },  // *
-            { Pixel::Empty() },  //
-            { Pixel::From(c) },  // *
-            { Pixel::Empty() }   //
+
+    static Colon New(MColor c) {
+        std::vector<std::vector<Pixel>> matrix = { 
+            { Pixel::Empty() },
+            { Pixel::From(c) },
+            { Pixel::Empty() },
+            { Pixel::From(c) },
+            { Pixel::Empty() }
         };
+        return Colon(matrix);
     }
 };
 
@@ -408,7 +418,6 @@ void draw(Canvas *canvas, Color background, Color foreground) {
         usleep(1 * 1000); // wait a little to slow down things.
     }
 }
-
 
 // get a random number between 0 and 255
 Color randomColor() {
@@ -454,11 +463,11 @@ int main(int argc, char* argv[]) {
 
         canvas->Fill(150, 60, 0);
 
-        Number::One(defaultTextColor).draw(canvas, 15, 0);
-        Number::Two(defaultTextColor).draw(canvas, 19, 0);
-        Colon(defaultTextColor).draw(canvas, 21, 0);
-        Number::Three(defaultTextColor).draw(canvas, 25, 0);
-        Number::Four(defaultTextColor).draw(canvas, 29, 0);
+        Number::One(defaultTextColor).draw(canvas, 14, 1);
+        Number::Two(defaultTextColor).draw(canvas, 18, 1);
+        Colon(defaultTextColor).draw(canvas, 21, 1);
+        Number::Three(defaultTextColor).draw(canvas, 24, 1);
+        Number::Four(defaultTextColor).draw(canvas, 28, 1);
         
         dawn.draw(canvas);
         noon.draw(canvas);
