@@ -86,7 +86,7 @@ public:
         }
     }
 
-    draw(Canvas* canvas) {
+    void draw(Canvas* canvas) {
         for (int y = 0; y < height; y++) {
             if (program_interrupted) {
                 return;
