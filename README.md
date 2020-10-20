@@ -1,7 +1,7 @@
 ## Minecraft Clock LED display
 
 - Create the following display using a Raspberry Pi and either a 16x16 or 32x16 LED display
-- Potentially use extra space on the display the time (for 32x16)
+- Potentially use extra space to display the time (for 32x16)
 
 ![clock](minecraft-clock.gif)
 
