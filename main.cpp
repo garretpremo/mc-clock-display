@@ -75,7 +75,7 @@ public:
         return Pixel();
     }
 
-    static Pixel From(Color color) {
+    static Pixel From(MColor color) {
         return Pixel(color);
     }
 
