@@ -30,7 +30,7 @@ public:
     Image(char* _filename) {
         filename = _filename;
         initialize();
-        printStatistics();
+        // printStatistics();
     }
 
 private:
@@ -156,6 +156,8 @@ void drawClock(Canvas* canvas, Image* image) {
 
             canvas->SetPixel(x, y, px[0], px[1], px[2]);
     }
+    
+    usleep(1 * 1000);  // wait a little to slow down things.
   }
 }
 
