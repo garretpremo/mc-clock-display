@@ -1,4 +1,4 @@
-CFLAGS=-Wall -O3 -g -Wextra -Wno-unused-parameter
+CFLAGS=-Wall -O3 -g -Wextra -Wno-unused-parameter -Wwrite-strings
 CXXFLAGS=$(CFLAGS)
 OBJECTS=main.o
 BINARIES=main
