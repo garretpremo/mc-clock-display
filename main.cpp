@@ -16,21 +16,75 @@ using rgb_matrix::Color;
 #define FPS 60
 #define MAX_COLOR_VALUE 255
 
+class Pixel {
+
+public:
+    int r;
+    int g;
+    int b;
+
+    Pixel(int red, int green, int blue) {
+        r = normalize(red);
+        g = normalize(green);
+        b = normalize(blue);
+    }
+
+    bool isBlack() {
+        return r == 0 && g == 0 && b == 0;
+    }
+
+private:
+    int normalize(int pixelValue) {
+        if (pixelValue < 0) {
+            return 0;
+        } else if (pixelValue > MAX_COLOR_VALUE) {
+            return MAX_COLOR_VALUE;
+        }
+
+        return pixelValue;
+    }
+
+};
+
+
 // PNG Image wrapper for pnglib
 class Image {
 
 public:
-    char *filename;
+    const char *filename;
     int width;
     int height;
     png_byte colorType;
     png_byte bitDepth;
     png_bytep *rowPointers = NULL;
+    Pixel** rows = NULL;
 
-    Image(char* _filename) {
+    Image(const char* _filename) {
         filename = _filename;
         initialize();
         // printStatistics();
+    }
+
+    ~Image() {
+        if (rowPointers != NULL) {
+	    for (int row = 0; row < height; row++) {
+                free(rowPointers[row]);
+                delete rowPointers[row];
+            }
+
+	    free(rowPointers);
+	    delete rowPointers;
+	}
+
+	if (rows != NULL) {
+            for (int row = 0; row < height; row++) {
+                free(rows[row]);
+		delete rows[row];
+	    }
+
+            free(rows);
+	    delete rows;
+	}
     }
 
 private:
@@ -76,9 +130,22 @@ private:
 
         // initialize rows
         rowPointers = (png_bytep*)malloc(sizeof(png_bytep) * height);
+	rows = (Pixel**)malloc(sizeof(Pixel*) * height);
         
         for(int y = 0; y < height; y++) {
-            rowPointers[y] = (png_byte*)malloc(png_get_rowbytes(png, info));
+	  
+	    png_byte* byte = (png_byte*)malloc(png_get_rowbytes(png, info));
+	    Pixel* pixels = (Pixel*)malloc(sizeof(Pixel) * width);
+
+            rowPointers[y] = byte;
+
+	    for (int x = 0; x < width; x++) {
+                png_bytep px = &(byte[x * 4]);
+
+            	pixels[x] = Pixel(px[0], px[1], px[2]);
+	    }
+
+	    rows[y] = pixels;
         }
 
         png_read_image(png, rowPointers);
@@ -145,17 +212,26 @@ void draw(Canvas *canvas, Color background, Color foreground) {
 }
 
 void drawImage(Canvas* canvas, Image* image) {
-    for (int y = 0; y < image->height && !program_interrupted; y++) {
-        png_bytep row = image->rowPointers[y];
+    
+    canvas->Fill(0, 0, 255);
+
+    for (int y = 0; y < image->height; y++) {
+	if (program_interrupted) {
+            return;
+	}
+
+	Pixel* row = image->rows[y];
+        // png_bytep row = image->rowPointers[y];
         
         for (int x = 0; x < image->width; x++) {
-            png_bytep px = &(row[x * 4]);
+            Pixel pixel = row[x];
+            	    
+    	    // png_bytep px = &(row[x * 4]);
 
-            canvas->SetPixel(x, y, px[0], px[1], px[2]);
+            canvas->SetPixel(x, y, pixel.r, pixel.g, pixel.b);
         }
-
-        usleep(1 * 100000);  // wait a little to slow down things.
     }
+    usleep(1 * 1000000);
 }
 
 // get a random number between 0 and 255
@@ -179,7 +255,7 @@ int main(int argc, char* argv[]) {
     defaults.cols = 32;
     defaults.chain_length = 1;
     defaults.parallel = 1;
-    defaults.brightness = 75;
+    defaults.brightness = 100;
 
     Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
     Image dawn = Image("./assets/images/dawn.png");
