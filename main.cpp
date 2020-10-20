@@ -28,10 +28,7 @@ public:
     int r, g, b, a;
 
     MColor(int red, int green, int blue, int alpha) {
-        r = normalize(red);
-        g = normalize(green);
-        b = normalize(blue);
-        a = alpha;
+        r = red, g = green, b = blue, a = alpha;
     }
 
     static MColor White() {
