@@ -88,6 +88,8 @@ public:
                 }
             }
         }
+
+        usleep(1 * 1000000);
     }
 
     void draw(Canvas* canvas) {
@@ -105,14 +107,10 @@ public:
     png_byte colorType;
     png_byte bitDepth;
     png_bytep *rowPointers = NULL;
-    // std::vector<std::vector<Pixel>> pixelMatrix = {};
-    int pixelOutputted;
 
     Image(const char *_filename) {
         filename = _filename;
         initialize();
-        pixelOutputted = 0;
-        // printStatistics();
     }
 
     ~Image() {
@@ -125,24 +123,6 @@ public:
             free(rowPointers);
         }
     }
-
-    // void draw(Canvas* canvas) {
-    //     for (int y = 0; y < height; y++) {
-    //         if (program_interrupted) {
-    //             return;
-    //         }
-
-    //         std::vector<Pixel> pixelRow = pixelMatrix[y];
-
-    //         for (int x = 0; x < width; x++) {
-    //             Pixel pixel = pixelRow[x];
-
-    //             if (!pixel.isInvisible()) {
-    //                 canvas->SetPixel(x, y, pixel.r, pixel.g, pixel.b);
-    //             }
-    //         }
-    //     }
-    // }
 
 private:
     void initialize() {
@@ -248,8 +228,6 @@ private:
 class Number: public PixelMatrix {
 
 public:
-    // std::vector<std::vector<Pixel>> pixelMatrix = {};
-
     Number(std::vector<std::vector<Pixel>> _pixelMatrix) {
         pixelMatrix = _pixelMatrix;
     }
@@ -298,18 +276,6 @@ void draw(Canvas *canvas, Color background, Color foreground) {
     }
 }
 
-void drawImage(Canvas *canvas, Image *image) {
-
-    canvas->Fill(150, 60, 0);
-
-    image->draw(canvas);
-
-    if (program_interrupted) {
-        return;
-    }
-
-    usleep(1 * 1000000);
-}
 
 // get a random number between 0 and 255
 Color randomColor() {
@@ -350,10 +316,16 @@ int main(int argc, char* argv[]) {
     // Color background = randomColor();
 
     while (!program_interrupted) {
-        drawImage(canvas, &dawn);
-        drawImage(canvas, &noon);
-        drawImage(canvas, &dusk);
-        drawImage(canvas, &midnight);
+
+        canvas->Fill(150, 60, 0);
+
+        Number::One().draw(canvas, 16, 0);
+        Number::Two().draw(canvas, 19, 0);
+        
+        dawn.draw(canvas);
+        noon.draw(canvas);
+        dusk.draw(canvas);
+        midnight.draw(canvas);
 
         // Color foreground = randomColor();
         // draw(canvas, background, foreground);
