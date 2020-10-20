@@ -126,7 +126,6 @@ void draw(Canvas *canvas, Color background, Color foreground) {
 }
 
 void drawClock(Canvas* canvas, Image* image) {
-    char *filename = "./assets/images/dusk.png";
 }
 
 // get a random number between 0 and 255
@@ -153,7 +152,7 @@ int main(int argc, char* argv[]) {
     defaults.brightness = 40;
 
     Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
-    Image *dusk = Image(filename);
+    Image *dusk = Image("./assets/images/dusk.png");
 
     if (canvas == NULL) {
         return EXIT_FAILURE;
