@@ -27,10 +27,14 @@ public:
     png_byte bitDepth;
     png_bytep *row_pointers = NULL;
 
-    Image(char *_filename) {
+    Image(char* _filename) {
         filename = _filename;
         initialize();
         printStatistics();
+    }
+
+    inline Image* CreateImageFromFilename(char* _filename) {
+        Image image = Image(_filename);
     }
 
 private:
@@ -152,7 +156,7 @@ int main(int argc, char* argv[]) {
     defaults.brightness = 40;
 
     Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
-    Image *dusk = Image("./assets/images/dusk.png");
+    Image *dusk = Image::CreateImageFromFilename("./assets/images/dusk.png");
 
     if (canvas == NULL) {
         return EXIT_FAILURE;
