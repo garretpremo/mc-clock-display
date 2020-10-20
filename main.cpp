@@ -37,7 +37,7 @@ private:
         }
 
         int headerSize = 8;
-        const unsigned char* header = (const unsigned char*) malloc(sizeof(const unsigned char) * headerSize);
+        unsigned char* header = (unsigned char*) malloc(sizeof(unsigned char) * headerSize);
 
         fread(header, 1, headerSize, file);
         bool isPng = !png_sig_cmp(header, 0, headerSize);
