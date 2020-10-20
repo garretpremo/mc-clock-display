@@ -40,7 +40,7 @@ private:
         char *header = (char*) malloc(sizeof(char) * headerSize);
 
         fread(header, 1, headerSize, file);
-        isPng = !png_sig_cmp(header, 0, headerSize);
+        bool isPng = !png_sig_cmp(header, 0, headerSize);
 
         if (!isPng) {
             std::cerr << "Error - Could not open file - File is not of type 'png'." << std::endl;
