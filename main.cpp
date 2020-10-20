@@ -28,7 +28,7 @@ public:
     }
 
 private:
-    initialize() {
+    void initialize() {
         FILE *file = fopen(filename, "rb");
 
         if (!file) {
@@ -54,7 +54,7 @@ private:
         fclose(file);
         free(header);
     }
-}
+};
 
 volatile bool program_interrupted = false;
 static void InterruptHandler(int signo) {
