@@ -10,6 +10,7 @@
 
 using rgb_matrix::RGBMatrix;
 using rgb_matrix::Canvas;
+using rgb_matrix::Color;
 
 #define FPS 60
 #define MAX_COLOR_VALUE 255
