@@ -24,6 +24,7 @@ static void InterruptHandler(int signo) {
 }
 
 class MColor {
+public:
     int r, g, b, a;
 
     MColor(int red, int green, int blue, int alpha) {
