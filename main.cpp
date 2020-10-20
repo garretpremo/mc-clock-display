@@ -21,10 +21,16 @@ class Image {
 
 public:
     char *filename;
+    int width;
+    int height;
+    png_byte colorType;
+    png_byte bitDepth;
+    png_bytep *row_pointers = NULL;
 
     Image(char *_filename) {
         filename = _filename;
         initialize();
+        printStatistics();
     }
 
 private:
@@ -36,6 +42,33 @@ private:
             return;
         }
 
+        
+        png_structp png = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+        if (!png) {
+            failInitialization(file);
+        }
+
+        png_infop info = png_create_info_struct(png);
+        if (!info) {
+            failInitialization(file);
+        }
+
+        if (setjmp(png_jmpbuf(png))) {
+            failInitialization(file);
+        }
+
+        png_init_io(png, file);
+        png_read_info(png, info);
+
+        width = png_get_image_width(png, info);
+        height = png_get_image_height(png, info);
+        colorType = png_get_color_type(png, info);
+        bitDepth = png_get_bit_depth(png, info);
+
+        fclose(file);
+    }
+
+    void determineIfPngFile(FILE* file) {
         int headerSize = 8;
         unsigned char* header = (unsigned char*) malloc(sizeof(unsigned char) * headerSize);
 
@@ -46,16 +79,22 @@ private:
             std::cerr << "Error - Could not open file - File is not of type 'png'." << std::endl;
             fclose(file);
             free(header);
-            return;
+            abort();
         }
 
-        png_structp pngPtr = png_create_read_struct(PNG_LIBPNG_VER_STRING, (png_voidp)png_error_ptr);
-        if (!png_ptr) {
-            return;
-        }
-
-        fclose(file);
         free(header);
+    }
+
+    void failInitialization(FILE* file) {
+        fclose(file);
+        abort();
+    }
+
+    void printStatistics() {
+        std::cout << "Width: " << width << std::endl;
+        std::cout << "Height: " << height << std::endl;
+        std::cout << "Color Depth: " << colorType << std::endl;
+        std::cout << "Bit Depth: " << bitDepth << std::endl;
     }
 };
 
@@ -86,10 +125,8 @@ void draw(Canvas *canvas, Color background, Color foreground) {
     }
 }
 
-void drawClock(Canvas *canvas) {
+void drawClock(Canvas* canvas, Image* image) {
     char *filename = "./assets/images/dusk.png";
-
-    Image dusk = Image(filename);
 }
 
 // get a random number between 0 and 255
@@ -116,6 +153,7 @@ int main(int argc, char* argv[]) {
     defaults.brightness = 40;
 
     Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
+    Image *dusk = Image(filename);
 
     if (canvas == NULL) {
         return EXIT_FAILURE;
@@ -127,7 +165,7 @@ int main(int argc, char* argv[]) {
     // Color background = randomColor();
 
     while (!program_interrupted) {
-        drawClock(canvas);
+        drawClock(canvas, dusk);
 
         // Color foreground = randomColor();
         // draw(canvas, background, foreground);
