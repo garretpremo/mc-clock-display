@@ -154,7 +154,7 @@ void drawClock(Canvas* canvas, Image* image) {
         for(int x = 0; x < image->width; x++) {
             png_bytep px = &(row[x * 4]);
 
-            canvas->SetPixel(x, y, px[0], px[1], px[2], px[3]);
+            canvas->SetPixel(x, y, px[0], px[1], px[2]);
     }
   }
 }
