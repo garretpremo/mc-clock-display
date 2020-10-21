@@ -1,13 +1,13 @@
 #include "./rpi-rgb-led-matrix/include/led-matrix.h"
 #include "./rpi-rgb-led-matrix/include/graphics.h"
 
-#include <math.h>
 #include <signal.h>
 #include <iostream>
 #include <stdio.h>
 #include <time.h>
 #include <unistd.h>
 #include <png.h>
+#include <cmath>
 #include <chrono>
 #include <ctime>
 
@@ -272,9 +272,6 @@ public:
         // class designed for only single-digit numbers
         uint numberNormalized = number % 10;
         switch (numberNormalized) {
-        
-        case 0:
-            return Number::Zero(color);
         case 1:
             return Number::One(color);
         case 2:
@@ -293,6 +290,8 @@ public:
             return Number::Eight(color);
         case 9:
             return Number::Nine(color);
+        default:
+            return Number::Zero(color);
         }
     }
 
@@ -449,8 +448,7 @@ void draw(Canvas *canvas, Color background, Color foreground) {
     }
 }
 
-drawCurrentTime(Canvas* canvas, MColor color) {
-
+void drawCurrentTime(Canvas* canvas, MColor color) {
     time_t now = time(0);
 
     tm* localTime = localtime(&now);
@@ -458,10 +456,13 @@ drawCurrentTime(Canvas* canvas, MColor color) {
     int min = localTime->tm_min;
     int sec = localTime->tm_sec;
 
-    Number::From((int)floor(min / 10.0), color).draw(canvas, 14, 1);
+    int minTensDigit = (int)std::floor(min / 10.0);
+    int secTensDigit = (int)std::floor(sec / 10);
+
+    Number::From(minTensDigit, color).draw(canvas, 14, 1);
     Number::From(min % 10, color).draw(canvas, 18, 1);
-    Colon::New(defaultTextColor).draw(canvas, 22, 1);
-    Number::From((int)floor(sec / 10.0, color).draw(canvas, 24, 1);
+    Colon::New(color).draw(canvas, 22, 1);
+    Number::From(secTensDigit, color).draw(canvas, 24, 1);
     Number::From(sec % 10, color).draw(canvas, 28, 1);
 }
 
