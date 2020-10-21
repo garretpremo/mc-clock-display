@@ -479,31 +479,49 @@ void draw(Canvas *canvas, Color background, Color foreground) {
     }
 }
 
-bool withinTime(int localHour, int localMin, int withinMinutes, int ofHours, int ofMinutes) {
-    if (localHour == ofHours)
+bool withinTime(time_t &now, int withinMinutes, int ofHours, int ofMinutes) {
+    tm adjustedTime = *localTime(&now);
+
+    adjustedTime.tm_hour = ofHours;
+    adjustedTime.th_min = ofMinutes;
+
+    double seconds = diffTime(now, mktime(&adjustedTime));
+    double minutes = seconds / 60;
+
+    return minutes < withinMinutes;
 }
 
 void drawCurrentClockFace(Canvas* canvas, Image &image) {
     time_t now = time(0);
-    tm* localTime = localtime(&now);
 
-    int hour = localTime->tm_hour;
-    // int mins = localTime->tm_min;
-
-    if (hour >= 3 && hour < 9) {
+    if (withinTime(now, 45, 6, 0) { // dawn
         if (image.filename.compare(DAWN_FILENAME) != 0) {
             image = Image(DAWN_FILENAME);
         }
-    } else if (hour >= 9 && hour < 15) {
+    } else if (withinTime(now, 45, 12, 0)) { // noon
         if (image.filename.compare(NOON_FILENAME) != 0) {
             image = Image(NOON_FILENAME);
         }
-    } else if (hour >= 15 && hour < 21) {
+    } else if (withinTime(now, 45, 18, 0)) { // dusk
         if (image.filename.compare(DUSK_FILENAME) != 0) {
             image = Image(DUSK_FILENAME);
         }
-    } else if (image.filename.compare(MIDNIGHT_FILENAME) != 0) {
-        image = Image(MIDNIGHT_FILENAME);
+    } else if (withinTime(now, 45, 0, 0)) { // midnight
+        if (image.filename.compare(MIDNIGHT_FILENAME) != 0) {
+            image = Image(MIDNIGHT_FILENAME);
+        }
+    } else if (withinTime(now, 45, 1, 30)) {
+        if (image.filename.compare(MIDNIGHT_PLUS_ONE_QUARTER) != 0) {
+            image = Image(MIDNIGHT_PLUS_ONE_QUARTER);
+        }
+    } else if (withinTime(now, 45, 3, 0)) {
+        if (image.filename.compare(MIDNIGHT_PLUS_HALF) != 0) {
+            image = Image(MIDNIGHT_PLUS_HALF);
+        }
+    } else if (withinTime(now, 45, 4, 30)) {
+        if (image.filename.compare(MIDNIGHT_PLUS_THREE_QUARTERS)) {
+            image = Image(MIDNIGHT_PLUS_THREE_QUARTERS);
+        }
     }
 
     image.draw(canvas);
