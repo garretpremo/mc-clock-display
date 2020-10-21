@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <unistd.h>
+#include <algorithm.h>
 #include <png.h>
 
 using rgb_matrix::Canvas;
@@ -28,7 +29,17 @@ public:
     int r, g, b, a;
 
     MColor(int red, int green, int blue, int alpha) {
-        r = red, g = green, b = blue, a = alpha;
+        float alphaPercentage = max(0, min(MAX_COLOR_VALUE, alpha)) / MAX_COLOR_VALUE;
+
+        r = (int)ceil(r * alphaPercentage);
+        g = (int)ceil(b * alphaPercentage);
+        b = (int)ceil(g * alphaPercentage);
+
+        if (alpha > 0) {
+            alpha = MAX_COLOR_VALUE;
+        } else {
+            alpha = 0;
+        }
     }
 
     static MColor White() {
@@ -433,7 +444,8 @@ int main(int argc, char* argv[]) {
 
     srand(time(NULL));
 
-    MColor defaultTextColor = MColor::Blue();
+    MColor bg = MColor(255, 160, 0, 25);
+    MColor defaultTextColor = MColor(255, 0, 0, 25);
 
     // define matrix defaults
     RGBMatrix::Options defaults;
@@ -442,7 +454,7 @@ int main(int argc, char* argv[]) {
     defaults.cols = 32;
     defaults.chain_length = 1;
     defaults.parallel = 1;
-    defaults.brightness = 100;
+    defaults.brightness = 80;
 
     Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
     Image dawn = Image("./assets/images/dawn.png");
@@ -461,7 +473,7 @@ int main(int argc, char* argv[]) {
 
     while (!program_interrupted) {
 
-        canvas->Fill(100, 30, 0);
+        canvas->Fill(bg.r, bg.g, bg.b);
 
         Number::One(defaultTextColor).draw(canvas, 14, 1);
         Number::Two(defaultTextColor).draw(canvas, 18, 1);
