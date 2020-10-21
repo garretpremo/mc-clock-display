@@ -29,11 +29,11 @@ public:
     int r, g, b, a;
 
     MColor(int red, int green, int blue, int alpha) {
-        float alphaPercentage = max(0, min(MAX_COLOR_VALUE, alpha)) / MAX_COLOR_VALUE;
+        float alphaPercentage = std::max(0, std::min(MAX_COLOR_VALUE, alpha)) / MAX_COLOR_VALUE;
 
-        r = (int)ceil(r * alphaPercentage);
-        g = (int)ceil(b * alphaPercentage);
-        b = (int)ceil(g * alphaPercentage);
+        r = (int)std::ceil(r * alphaPercentage);
+        g = (int)std::ceil(b * alphaPercentage);
+        b = (int)std::ceil(g * alphaPercentage);
 
         if (alpha > 0) {
             alpha = MAX_COLOR_VALUE;
