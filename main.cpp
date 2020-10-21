@@ -434,7 +434,7 @@ int main(int argc, char* argv[]) {
     srand(time(NULL));
 
     MColor bg = MColor(100, 40, 0, 255);
-    MColor defaultTextColor = MColor(100, 0, 0, 255);
+    MColor defaultTextColor = MColor(10, 40, 100, 255);
 
     // define matrix defaults
     RGBMatrix::Options defaults;
