@@ -712,7 +712,7 @@ int main(int argc, char* argv[]) {
     int iteration = 0;
     // Color background = randomColor();
 
-    MinecraftClock minecraftClock = new MinecraftClock();
+    MinecraftClock minecraftClock = new MinecraftClock(canvas);
 
     while (!program_interrupted) {
         canvas->Clear();
