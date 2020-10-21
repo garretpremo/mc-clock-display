@@ -8,6 +8,8 @@
 #include <time.h>
 #include <unistd.h>
 #include <png.h>
+#include <chrono>
+#include <ctime>
 
 using rgb_matrix::Canvas;
 using rgb_matrix::Color;
@@ -266,6 +268,34 @@ private:
 
 public:
 
+    static Number From(uint number, MColor color) {
+        // class designed for only single-digit numbers
+        uint numberNormalized = number % 10;
+        switch (numberNormalized) {
+        
+        case 0:
+            return Number::Zero(color);
+        case 1:
+            return Number::One(color);
+        case 2:
+            return Number::Two(color);
+        case 3:
+            return Number::Three(color);
+        case 4:
+            return Number::Four(color);
+        case 5:
+            return Number::Five(color);
+        case 6:
+            return Number::Six(color);
+        case 7:
+            return Number::Seven(color);
+        case 8:
+            return Number::Eight(color);
+        case 9:
+            return Number::Nine(color);
+        }
+    }
+
     static Number One(MColor c) {
         std::vector<std::vector<Pixel>> matrix = { 
             { Pixel::Empty(), Pixel::From(c), Pixel::Empty() },  //  *
@@ -419,6 +449,22 @@ void draw(Canvas *canvas, Color background, Color foreground) {
     }
 }
 
+drawCurrentTime(Canvas* canvas, MColor color) {
+
+    time_t now = time(0);
+
+    tm* localTime = localtime(&now);
+
+    int min = localTime->tm_min;
+    int sec = localTime->tm_sec;
+
+    Number::From((int)floor(min / 10.0), color).draw(canvas, 14, 1);
+    Number::From(min % 10, color).draw(canvas, 18, 1);
+    Colon::New(defaultTextColor).draw(canvas, 22, 1);
+    Number::From((int)floor(sec / 10.0, color).draw(canvas, 24, 1);
+    Number::From(sec % 10, color).draw(canvas, 28, 1);
+}
+
 // get a random number between 0 and 255
 Color randomColor() {
     int r = rand() % (MAX_COLOR_VALUE + 1);
@@ -464,17 +510,7 @@ int main(int argc, char* argv[]) {
 
         // canvas->Fill(bg.r, bg.g, bg.b);
 
-        Number::One(defaultTextColor).draw(canvas, 14, 1);
-        Number::Two(defaultTextColor).draw(canvas, 18, 1);
-        Colon::New(defaultTextColor).draw(canvas, 22, 1);
-        Number::Three(defaultTextColor).draw(canvas, 24, 1);
-        Number::Four(defaultTextColor).draw(canvas, 28, 1);
-
-        Number::Five(defaultTextColor).draw(canvas, 14, 7);
-        Number::Six(defaultTextColor).draw(canvas, 18, 7);
-        Colon::New(defaultTextColor).draw(canvas, 22, 7);
-        Number::Seven(defaultTextColor).draw(canvas, 24, 7);
-        Number::Eight(defaultTextColor).draw(canvas, 28, 7);
+        drawCurrentTime(canvas, defaultTextColor);
 
         dawn.draw(canvas);
         noon.draw(canvas);
