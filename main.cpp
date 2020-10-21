@@ -17,6 +17,10 @@ using rgb_matrix::RGBMatrix;
 
 #define FPS 60
 #define MAX_COLOR_VALUE 255
+#define DAWN_FILENAME"./assets/images/dawn.png"
+#define NOON_FILENAME"./assets/images/noon.png"
+#define DUSK_FILENAME"./assets/images/dusk.png"
+#define MIDNIGHT_FILENAME"./assets/images/midnight.png"
 
 volatile bool program_interrupted = false;
 static void InterruptHandler(int signo) {
@@ -146,14 +150,6 @@ public:
             }
 
             free(rowPointers);
-        }
-    }
-
-    void draw(Canvas* canvas) {
-        PixelMatrix::draw(canvas);
-
-        if (!program_interrupted) {
-            usleep(1 * 1000000);
         }
     }
 
@@ -448,6 +444,32 @@ void draw(Canvas *canvas, Color background, Color foreground) {
     }
 }
 
+void drawCurrentClockFace(Canvas* canvas, Image* image) {
+    time_t now = time(0);
+
+    tm* localTime = localtime(&now);
+
+    int hour = localTime->tm_hour;
+
+    if (hour >= 3 && hour < 9) {
+        if (image == NULL || image->filename != DAWN_FILENAME) {
+            *image = Image(DAWN_FILENAME);
+        }
+    } else if (hour >= 9 && hour < 15) {
+        if (image == NULL || image->filename != NOON_FILENAME) {
+            *image = Image(NOON_FILENAME);
+        }
+    } else if (hour >= 15 && hour < 21) {
+        if (image == NULL || image->filename != DUSK_FILENAME) {
+            *image = Image(DUSK_FILENAME);
+        }
+    } else if (image == NULL || image->filename != MIDNIGHT_FILENAME) {
+        *image = Image(MIDNIGHT_FILENAME);
+    }
+
+    image->draw();
+}
+
 void drawCurrentTime(Canvas* canvas, MColor color) {
     time_t now = time(0);
 
@@ -490,13 +512,10 @@ int main(int argc, char* argv[]) {
     defaults.cols = 32;
     defaults.chain_length = 1;
     defaults.parallel = 1;
-    defaults.brightness = 80;
+    defaults.brightness = 50;
 
     Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
-    Image dawn = Image("./assets/images/dawn.png");
-    Image noon = Image("./assets/images/noon.png");
-    Image dusk = Image("./assets/images/dusk.png");
-    Image midnight = Image("./assets/images/midnight.png");
+    Image currentImage = NULL;
 
     if (canvas == NULL) {
         return EXIT_FAILURE;
@@ -508,16 +527,11 @@ int main(int argc, char* argv[]) {
     // Color background = randomColor();
 
     while (!program_interrupted) {
-
         canvas->Clear();
-        // canvas->Fill(bg.r, bg.g, bg.b);
 
         drawCurrentTime(canvas, defaultTextColor);
-
-        dawn.draw(canvas);
-        noon.draw(canvas);
-        dusk.draw(canvas);
-        midnight.draw(canvas);
+        drawCurrentClockFace(canvas, &currentImage);
+        usleep(1 * 10000000);
 
         // Color foreground = randomColor();
         // draw(canvas, background, foreground);
