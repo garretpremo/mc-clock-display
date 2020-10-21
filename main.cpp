@@ -182,6 +182,14 @@ public:
         }
     }
 
+    void drawAndWait(Canvas* canvas) {
+        PixelMatrix::draw(canvas);
+
+        if (!program_interrupted) {
+            usleep(1 * 1000000);
+        }
+    }
+
 private:
     void initialize() {
 
@@ -563,6 +571,25 @@ void drawCurrentClockFace(Canvas* canvas, Image &image) {
     image.draw(canvas);
 }
 
+void spinClock(Canvas* canvas) {
+    Image(DAWN_FILENAME).drawAndWait(canvas);
+    Image(NOON_MINUS_THREE_QUARTERS).drawAndWait(canvas);
+    Image(NOON_MINUS_HALF).drawAndWait(canvas);
+    Image(NOON_MINUS_ONE_QUARTER).drawAndWait(canvas);
+    Image(NOON_FILENAME).drawAndWait(canvas);
+    Image(NOON_PLUS_ONE_QUARTER).drawAndWait(canvas);
+    Image(NOON_PLUS_HALF).drawAndWait(canvas);
+    Image(NOON_PLUS_THREE_QUARTERS).drawAndWait(canvas);
+    Image(DUSK_FILENAME).drawAndWait(canvas);
+    Image(MIDNIGHT_MINUS_THREE_QUARTERS).drawAndWait(canvas);
+    Image(MIDNIGHT_MINUS_HALF).drawAndWait(canvas);
+    Image(MIDNIGHT_MINUS_ONE_QUARTER).drawAndWait(canvas);
+    Image(MIDNIGHT_FILENAME).drawAndWait(canvas);
+    Image(MIDNIGHT_PLUS_ONE_QUARTER).drawAndWait(canvas);
+    Image(MIDNIGHT_PLUS_HALF).drawAndWait(canvas);
+    Image(MIDNIGHT_PLUS_THREE_QUARTERS).drawAndWait(canvas);
+}
+
 void drawCurrentTime(Canvas* canvas, MColor color) {
     time_t now = time(0);
 
@@ -617,6 +644,7 @@ int main(int argc, char* argv[]) {
     signal(SIGTERM, InterruptHandler);
     signal(SIGINT, InterruptHandler);
 
+    int iteration = 0;
     // Color background = randomColor();
 
     while (!program_interrupted) {
@@ -632,6 +660,9 @@ int main(int argc, char* argv[]) {
         // Color foreground = randomColor();
         // draw(canvas, background, foreground);
         // background = foreground;
+        if (i++ % 10 == 0) {
+            spinClock(canvas);
+        }
     }
 
     canvas->Clear();
