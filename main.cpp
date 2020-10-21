@@ -523,7 +523,7 @@ private:
             int currentHour = std::floor(currentMinutes / 60);
             int currentMinute = ((int)std::floor(currentMinutes)) % 60;
 
-            ClockFace clockFace(filename, currentHour, currentMinute, timeWindow);
+            ClockFace clockFace = ClockFace(filename, currentHour, currentMinute, timeWindow);
             clockFaces.push_back(clockFace);
 
             std::cout << "filename: " << filename << ", start hour: " << currentHour << ", start minute: " << currentMinute << ", time window: " << timeWindow << std::endl;
@@ -713,7 +713,7 @@ int main(int argc, char* argv[]) {
     int iteration = 0;
     // Color background = randomColor();
 
-    MinecraftClock minecraftClock();
+    MinecraftClock minecraftClock = new MinecraftClock();
 
     while (!program_interrupted) {
         canvas->Clear();
@@ -735,5 +735,6 @@ int main(int argc, char* argv[]) {
 
     canvas->Clear();
     delete canvas;
+    delete minecraftClock;
     return EXIT_SUCCESS;
 }
