@@ -669,7 +669,7 @@ int main(int argc, char* argv[]) {
         // Color foreground = randomColor();
         // draw(canvas, background, foreground);
         // background = foreground;
-        if (iteration++ % 200 == 199) {
+        if (iteration++ % 80 == 79) {
             spinClock(canvas);
         }
     }
