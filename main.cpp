@@ -21,7 +21,7 @@ using rgb_matrix::RGBMatrix;
 char* DAWN_FILENAME = (char*)"./assets/images/dawn.png";
 char* NOON_FILENAME = (char*)"./assets/images/noon.png";
 char* DUSK_FILENAME = (char*)"./assets/images/dusk.png";
-char* MIDNIGHT_FILENAME = (char*)"./assets/images/midnight.png";
+// char* MIDNIGHT_FILENAME = (char*)"./assets/images/midnight.png";
 
 // Image dawn = Image("./assets/images/dawn.png");
 // Image noon = Image("./assets/images/noon.png");
@@ -470,9 +470,9 @@ void drawCurrentClockFace(Canvas* canvas, Image* image) {
         if (image == NULL || image->filename != DUSK_FILENAME) {
             *image = Image(DUSK_FILENAME);
         }
-    } else if (image == NULL || image->filename != MIDNIGHT_FILENAME) {
+    } else if (image == NULL || image->filename != "./assets/images/midnight.png") {
         std::cout << "init midnight" << std::endl;
-        *image = Image(MIDNIGHT_FILENAME);
+        *image = Image("./assets/images/midnight.png");
         std::cout << "init'd midnight" << std::endl;
     }
 
