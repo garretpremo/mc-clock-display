@@ -259,19 +259,21 @@ private:
 
         png_read_image(png, rowPointers);
 
+        pixelMatrix = std::vector<std::vector<Pixel>>(height);
+
         // initialize matrix of Pixels
         for (int y = 0; y < height; y++) {
-            std::vector<Pixel> pixelRow = {};
+            std::vector<Pixel> pixelRow(width);
             png_bytep row = rowPointers[y];
 
             for (int x = 0; x < width; x++) {
                 png_bytep px = &(row[x * 4]);
 
                 Pixel pixel = Pixel(px[0], px[1], px[2], px[3]);
-                pixelRow.push_back(pixel);
+                pixelRow.at(x) = pixel;
             }
 
-            pixelMatrix.push_back(pixelRow);
+            pixelMatrix.at(y) = pixelRow;
         }
 
         fclose(file);
