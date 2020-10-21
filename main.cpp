@@ -495,8 +495,8 @@ int main(int argc, char* argv[]) {
     Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
     Image dawn = Image("./assets/images/dawn.png");
     Image noon = Image("./assets/images/noon.png");
-    Image dusk = Image("./assets/images/dusk.png");
-    Image midnight = Image("./assets/images/midnight.png");
+    Image dusk = Image("./assets/images/dusk2.png");
+    Image midnight = Image("./assets/images/midnight2.png");
 
     if (canvas == NULL) {
         return EXIT_FAILURE;
