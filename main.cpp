@@ -108,6 +108,8 @@ public:
             for (uint x = 0; x < pixelRow.size(); x++) {
                 Pixel pixel = pixelRow[x];
 
+                pixel.print();
+
                 if (!pixel.isInvisible()) {
                     canvas->SetPixel(x + startX, y + startY, pixel.r, pixel.g, pixel.b);
                 }
@@ -463,16 +465,18 @@ int main(int argc, char* argv[]) {
 
         canvas->Fill(150, 60, 0);
 
-        Number::One(defaultTextColor).draw(canvas, 14, 1);
-        Number::Two(defaultTextColor).draw(canvas, 18, 1);
+        // Number::One(defaultTextColor).draw(canvas, 14, 1);
+        // Number::Two(defaultTextColor).draw(canvas, 18, 1);
         Colon::New(defaultTextColor).draw(canvas, 21, 1);
-        Number::Three(defaultTextColor).draw(canvas, 24, 1);
-        Number::Four(defaultTextColor).draw(canvas, 28, 1);
+
+        usleep(1 * 1000000);
+        // Number::Three(defaultTextColor).draw(canvas, 24, 1);
+        // Number::Four(defaultTextColor).draw(canvas, 28, 1);
         
-        dawn.draw(canvas);
-        noon.draw(canvas);
-        dusk.draw(canvas);
-        midnight.draw(canvas);
+        // dawn.draw(canvas);
+        // noon.draw(canvas);
+        // dusk.draw(canvas);
+        // midnight.draw(canvas);
 
         // Color foreground = randomColor();
         // draw(canvas, background, foreground);
