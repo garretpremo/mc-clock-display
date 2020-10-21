@@ -433,8 +433,8 @@ int main(int argc, char* argv[]) {
 
     srand(time(NULL));
 
-    MColor bg = MColor(100, 40, 0, 255);
-    MColor defaultTextColor = MColor(10, 40, 100, 255);
+    // MColor bg = MColor(100, 40, 0, 255);
+    MColor defaultTextColor = MColor(150, 150, 150, 255);
 
     // define matrix defaults
     RGBMatrix::Options defaults;
@@ -462,7 +462,7 @@ int main(int argc, char* argv[]) {
 
     while (!program_interrupted) {
 
-        canvas->Fill(bg.r, bg.g, bg.b);
+        // canvas->Fill(bg.r, bg.g, bg.b);
 
         Number::One(defaultTextColor).draw(canvas, 14, 1);
         Number::Two(defaultTextColor).draw(canvas, 18, 1);
