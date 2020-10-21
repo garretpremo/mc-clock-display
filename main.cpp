@@ -520,10 +520,14 @@ private:
         std::cout << "initializing clock faces..." << std::endl;
         int images = 16;
         float currentMinutes = 0;
-        float minutesBetweenFaces = (24 / 16) * 60;
-        float timeWindow = minutesBetweenFaces / 2;
 
-        for (int i = 0; i < images; i++) {
+        float minutesBetweenFaces = (24 / 16) * 60;
+        std::cout << "minutes between faces" minutesBetweenFaces << std::endl;
+        
+        float timeWindow = minutesBetweenFaces / 2;
+        std::cout << "time window" << timeWindow << std::endl;
+
+        for (uint i = 0; i < images; i++) {
             std::string filePrefix("./assets/images_numbered/");
             std::string fileSuffix(".png");
             std::string filename = filePrefix + std::to_string(i) + fileSuffix;
@@ -535,6 +539,7 @@ private:
             clockFaces.push_back(clockFace);
 
             std::cout << "filename: " << filename << ", start hour: " << currentHour << ", start minute: " << currentMinute << ", time window: " << timeWindow << std::endl;
+            currentMinutes += minutesBetweenFaces;
         }
     }
 };
@@ -723,23 +728,23 @@ int main(int argc, char* argv[]) {
 
     MinecraftClock* minecraftClock = new MinecraftClock(canvas);
 
-    while (!program_interrupted) {
-        canvas->Clear();
+    // while (!program_interrupted) {
+    //     canvas->Clear();
 
-        drawCurrentTime(canvas, defaultTextColor);
-        drawCurrentClockFace(canvas, currentImage);
+    //     drawCurrentTime(canvas, defaultTextColor);
+    //     drawCurrentClockFace(canvas, currentImage);
 
-        if (!program_interrupted) {
-            usleep(1 * 100000);
-        }
+    //     if (!program_interrupted) {
+    //         usleep(1 * 100000);
+    //     }
 
-        // Color foreground = randomColor();
-        // draw(canvas, background, foreground);
-        // background = foreground;
-        if (iteration++ % 80 == 79) {
-            spinClock(canvas);
-        }
-    }
+    //     // Color foreground = randomColor();
+    //     // draw(canvas, background, foreground);
+    //     // background = foreground;
+    //     if (iteration++ % 80 == 79) {
+    //         spinClock(canvas);
+    //     }
+    // }
 
     canvas->Clear();
     delete canvas;
