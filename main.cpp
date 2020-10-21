@@ -453,18 +453,18 @@ void drawCurrentClockFace(Canvas* canvas, Image* image) {
     int hour = localTime->tm_hour;
 
     if (hour >= 3 && hour < 9) {
-        if (image == NULL || image->filename != DAWN_FILENAME) {
+        if (*image == NULL || image->filename != DAWN_FILENAME) {
             *image = Image(DAWN_FILENAME);
         }
     } else if (hour >= 9 && hour < 15) {
-        if (image == NULL || image->filename != NOON_FILENAME) {
+        if (*image == NULL || image->filename != NOON_FILENAME) {
             *image = Image(NOON_FILENAME);
         }
     } else if (hour >= 15 && hour < 21) {
-        if (image == NULL || image->filename != DUSK_FILENAME) {
+        if (*image == NULL || image->filename != DUSK_FILENAME) {
             *image = Image(DUSK_FILENAME);
         }
-    } else if (image == NULL || image->filename != MIDNIGHT_FILENAME) {
+    } else if (*image == NULL || image->filename != MIDNIGHT_FILENAME) {
         *image = Image(MIDNIGHT_FILENAME);
     }
 
