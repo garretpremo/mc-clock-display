@@ -654,13 +654,13 @@ int main(int argc, char* argv[]) {
         drawCurrentClockFace(canvas, currentImage);
 
         if (!program_interrupted) {
-            usleep(1 * 1000000);
+            usleep(1 * 100000);
         }
 
         // Color foreground = randomColor();
         // draw(canvas, background, foreground);
         // background = foreground;
-        if (iteration++ % 10 == 0) {
+        if (iteration++ % 10 == 9) {
             spinClock(canvas);
         }
     }
