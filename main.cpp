@@ -206,8 +206,6 @@ private:
 
         FILE* file = fopen(f_cstr, "rb");
 
-        delete[] f_cstr;
-
         if (!file) {
             fclose(file);
             return;
@@ -271,6 +269,7 @@ private:
         }
 
         fclose(file);
+        delete f_cstr;
         png_destroy_read_struct(&png, &info, NULL);
     }
 
