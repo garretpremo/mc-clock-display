@@ -517,18 +517,10 @@ public:
 private:
 
     void initializeClockFaces() {
-        std::cout << "initializing clock faces..." << std::endl;
         int images = 16;
         float currentMinutes = 0;
-
-        double hoursBetweenFaces = 24 / images;
-        std::cout << "hours between faces" << hoursBetweenFaces << std::endl;
-
-        float minutesBetweenFaces = hoursBetweenFaces * 60;
-        std::cout << "minutes between faces" << minutesBetweenFaces << std::endl;
-        
+        float minutesBetweenFaces = (24.0 / images) * 60;
         float timeWindow = minutesBetweenFaces / 2;
-        std::cout << "time window" << timeWindow << std::endl;
 
         for (int i = 0; i < images; i++) {
             std::string filePrefix("./assets/images_numbered/");
