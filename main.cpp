@@ -98,21 +98,15 @@ public:
     std::vector<std::vector<Pixel>> pixelMatrix;
 
     void draw(Canvas* canvas, int startX, int startY) {
-        std::cout << "Draw" << std::endl;
-        std::cout << pixelMatrix.size() << std::endl;
-
         for (uint y = 0; y < pixelMatrix.size(); y++) {
             if (program_interrupted) {
                 return;
             }
 
             std::vector<Pixel> pixelRow = pixelMatrix[y];
-            std::cout << pixelRow.size() << std::endl;;
 
             for (uint x = 0; x < pixelRow.size(); x++) {
                 Pixel pixel = pixelRow[x];
-
-                pixel.print();
 
                 if (!pixel.isInvisible()) {
                     canvas->SetPixel(x + startX, y + startY, pixel.r, pixel.g, pixel.b);
@@ -387,20 +381,19 @@ class Colon: public PixelMatrix {
 
 private:
     Colon(std::vector<std::vector<Pixel>> _pixelMatrix) {
-        pixelMatrix = pixelMatrix;
+        pixelMatrix = _pixelMatrix;
     }
 
 public:
 
     static Colon New(MColor c) {
         std::vector<std::vector<Pixel>> matrix = { 
-            { Pixel::Empty(), Pixel::Empty() },
-            { Pixel::From(c), Pixel::Empty() },
-            { Pixel::Empty(), Pixel::Empty() },
-            { Pixel::From(c), Pixel::Empty() },
-            { Pixel::Empty(), Pixel::Empty() }
+            { Pixel::Empty() },
+            { Pixel::From(c) },
+            { Pixel::Empty() },
+            { Pixel::From(c) },
+            { Pixel::Empty() }
         };
-        std::cout << matrix.size() << std::endl;
         return Colon(matrix);
     }
 };
@@ -468,21 +461,18 @@ int main(int argc, char* argv[]) {
 
     while (!program_interrupted) {
 
-        // canvas->Fill(150, 60, 0);
+        canvas->Fill(150, 60, 0);
 
-        // Number::One(defaultTextColor).draw(canvas, 14, 1);
-        // Number::Two(defaultTextColor).draw(canvas, 18, 1);
-        Colon colon = Colon::New(defaultTextColor);
-        colon.draw(canvas, 21, 1);
-
-        usleep(1 * 1000000);
-        // Number::Three(defaultTextColor).draw(canvas, 24, 1);
-        // Number::Four(defaultTextColor).draw(canvas, 28, 1);
+        Number::One(defaultTextColor).draw(canvas, 14, 1);
+        Number::Two(defaultTextColor).draw(canvas, 18, 1);
+        Colon::New(defaultTextColor).draw(canvas, 21, 1);
+        Number::Three(defaultTextColor).draw(canvas, 24, 1);
+        Number::Four(defaultTextColor).draw(canvas, 28, 1);
         
-        // dawn.draw(canvas);
-        // noon.draw(canvas);
-        // dusk.draw(canvas);
-        // midnight.draw(canvas);
+        dawn.draw(canvas);
+        noon.draw(canvas);
+        dusk.draw(canvas);
+        midnight.draw(canvas);
 
         // Color foreground = randomColor();
         // draw(canvas, background, foreground);
