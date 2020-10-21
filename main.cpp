@@ -18,10 +18,10 @@ using rgb_matrix::RGBMatrix;
 #define FPS 60
 #define MAX_COLOR_VALUE 255
 
-char* DAWN_FILENAME "./assets/images/dawn.png";
-char* NOON_FILENAME "./assets/images/noon.png";
-char* DUSK_FILENAME "./assets/images/dusk.png";
-char* MIDNIGHT_FILENAME "./assets/images/midnight.png";
+char* DAWN_FILENAME = "./assets/images/dawn.png";
+char* NOON_FILENAME = "./assets/images/noon.png";
+char* DUSK_FILENAME = "./assets/images/dusk.png";
+char* MIDNIGHT_FILENAME = "./assets/images/midnight.png";
 
 volatile bool program_interrupted = false;
 static void InterruptHandler(int signo) {
