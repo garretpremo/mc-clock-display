@@ -394,11 +394,11 @@ public:
 
     static Colon New(MColor c) {
         std::vector<std::vector<Pixel>> matrix = { 
-            { Pixel::Empty() },
-            { Pixel::From(c) },
-            { Pixel::Empty() },
-            { Pixel::From(c) },
-            { Pixel::Empty() }
+            { Pixel::Empty(), Pixel::Empty() },
+            { Pixel::From(c), Pixel::Empty() },
+            { Pixel::Empty(), Pixel::Empty() },
+            { Pixel::From(c), Pixel::Empty() },
+            { Pixel::Empty(), Pixel::Empty() }
         };
         std::cout << matrix.size() << std::endl;
         return Colon(matrix);
