@@ -553,7 +553,10 @@ int main(int argc, char* argv[]) {
 
         drawCurrentTime(canvas, defaultTextColor);
         drawCurrentClockFace(canvas, currentImage);
-        usleep(1 * 1000000);
+
+        if (!program_interrupted) {
+            usleep(1 * 1000000);
+        }
 
         // Color foreground = randomColor();
         // draw(canvas, background, foreground);
