@@ -482,7 +482,7 @@ void draw(Canvas *canvas, Color background, Color foreground) {
 bool withinTime(time_t &now, int withinMinutes, int ofHours, int ofMinutes) {
     tm adjustedTime = *localtime(&now);
     
-    std::cout << "difference between " adjustedTime.tm_hour << ":" << adjustedTime.tm_min << " and ";
+    std::cout << "difference between " << adjustedTime.tm_hour << ":" << adjustedTime.tm_min << " and ";
 
     adjustedTime.tm_hour = ofHours;
     adjustedTime.tm_min = ofMinutes;
