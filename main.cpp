@@ -461,14 +461,21 @@ int main(int argc, char* argv[]) {
 
     while (!program_interrupted) {
 
-        canvas->Fill(150, 60, 0);
+        canvas->Fill(100, 30, 0);
 
         Number::One(defaultTextColor).draw(canvas, 14, 1);
         Number::Two(defaultTextColor).draw(canvas, 18, 1);
         Colon::New(defaultTextColor).draw(canvas, 22, 1);
         Number::Three(defaultTextColor).draw(canvas, 24, 1);
         Number::Four(defaultTextColor).draw(canvas, 28, 1);
+
+        Number::Five(defaultTextColor).draw(canvas, 14, 1);
+        Number::Six(defaultTextColor).draw(canvas, 18, 1);
+        Colon::New(defaultTextColor).draw(canvas, 22, 1);
+        Number::Seven(defaultTextColor).draw(canvas, 24, 1);
+        Number::Eight(defaultTextColor).draw(canvas, 28, 1);
         
+
         dawn.draw(canvas);
         noon.draw(canvas);
         dusk.draw(canvas);
