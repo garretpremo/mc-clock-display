@@ -100,7 +100,7 @@ public:
     void draw(Canvas* canvas, int startX, int startY) {
         std::cout << "Draw" << std::endl;
         std::cout << pixelMatrix.size() << std::endl;
-        
+
         for (uint y = 0; y < pixelMatrix.size(); y++) {
             if (program_interrupted) {
                 return;
@@ -400,6 +400,7 @@ public:
             { Pixel::From(c) },
             { Pixel::Empty() }
         };
+        std::cout << matrix.size() << std::endl;
         return Colon(matrix);
     }
 };
