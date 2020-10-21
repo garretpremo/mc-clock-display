@@ -186,7 +186,7 @@ public:
         PixelMatrix::draw(canvas);
 
         if (!program_interrupted) {
-            usleep(1 * 1000000);
+            usleep(1 * 100000);
         }
     }
 
@@ -660,7 +660,7 @@ int main(int argc, char* argv[]) {
         // Color foreground = randomColor();
         // draw(canvas, background, foreground);
         // background = foreground;
-        if (iteration++ % 10 == 9) {
+        if (iteration++ % 10 == 0) {
             spinClock(canvas);
         }
     }
