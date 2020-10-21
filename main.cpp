@@ -7,7 +7,6 @@
 #include <stdio.h>
 #include <time.h>
 #include <unistd.h>
-#include <algorithm>
 #include <png.h>
 
 using rgb_matrix::Canvas;
@@ -29,17 +28,7 @@ public:
     int r, g, b, a;
 
     MColor(int red, int green, int blue, int alpha) {
-        float alphaPercentage = std::max(0, std::min(MAX_COLOR_VALUE, alpha)) / MAX_COLOR_VALUE;
-
-        r = (int)std::ceil(red * alphaPercentage);
-        g = (int)std::ceil(blue * alphaPercentage);
-        b = (int)std::ceil(green * alphaPercentage);
-
-        if (alpha > 0) {
-            a = MAX_COLOR_VALUE;
-        } else {
-            a = 0;
-        }
+        r = red, g = green, b = blue, a = alpha;
     }
 
     static MColor White() {
@@ -444,8 +433,8 @@ int main(int argc, char* argv[]) {
 
     srand(time(NULL));
 
-    MColor bg = MColor(255, 160, 0, 25);
-    MColor defaultTextColor = MColor(255, 0, 0, 25);
+    MColor bg = MColor(100, 40, 0, 255);
+    MColor defaultTextColor = MColor(100, 0, 0, 255);
 
     // define matrix defaults
     RGBMatrix::Options defaults;
