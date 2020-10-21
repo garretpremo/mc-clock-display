@@ -20,22 +20,22 @@ using rgb_matrix::RGBMatrix;
 #define FPS 60
 #define MAX_COLOR_VALUE 255
 
-std::string MIDNIGHT_MINUS_THREE_QUARTERS ("./assets/images/midnight-minus-three-quarters.png");
-std::string MIDNIGHT_MINUS_HALF ("./assets/images/midnight-minus-half.png");
-std::string MIDNIGHT_MINUS_ONE_QUARTER ("./assets/images/midnight-minus-one-quarter.png");
-std::string MIDNIGHT_FILENAME ("./assets/images/midnight.png");
-std::string MIDNIGHT_PLUS_ONE_QUARTER ("./assets/images/midnight-plus-one-quarter.png");
-std::string MIDNIGHT_PLUS_HALF ("./assets/images/midnight-plus-half.png");
-std::string MIDNIGHT_PLUS_THREE_QUARTERS ("./assets/images/midnight-plus-three-quarters.png");
-std::string DAWN_FILENAME ("./assets/images/dawn.png");
-std::string NOON_MINUS_THREE_QUARTERS ("./assets/images/noon-minus-three-quarters.png");
-std::string NOON_MINUS_HALF ("./assets/images/noon-minus-half.png");
-std::string NOON_MINUS_ONE_QUARTER ("./assets/images/noon-minus-one-quarter.png");
-std::string NOON_FILENAME ("./assets/images/noon.png");
-std::string NOON_PLUS_ONE_QUARTER ("./assets/images/noon-plus-one-quarter.png");
-std::string NOON_PLUS_HALF ("./assets/images/noon-plus-half.png");
-std::string NOON_PLUS_THREE_QUARTERS ("./assets/images/noon-plus-three-quarters.png");
-std::string DUSK_FILENAME ("./assets/images/dusk.png");
+// std::string MIDNIGHT_MINUS_THREE_QUARTERS ("./assets/images/midnight-minus-three-quarters.png");
+// std::string MIDNIGHT_MINUS_HALF ("./assets/images/midnight-minus-half.png");
+// std::string MIDNIGHT_MINUS_ONE_QUARTER ("./assets/images/midnight-minus-one-quarter.png");
+// std::string MIDNIGHT_FILENAME ("./assets/images/midnight.png");
+// std::string MIDNIGHT_PLUS_ONE_QUARTER ("./assets/images/midnight-plus-one-quarter.png");
+// std::string MIDNIGHT_PLUS_HALF ("./assets/images/midnight-plus-half.png");
+// std::string MIDNIGHT_PLUS_THREE_QUARTERS ("./assets/images/midnight-plus-three-quarters.png");
+// std::string DAWN_FILENAME ("./assets/images/dawn.png");
+// std::string NOON_MINUS_THREE_QUARTERS ("./assets/images/noon-minus-three-quarters.png");
+// std::string NOON_MINUS_HALF ("./assets/images/noon-minus-half.png");
+// std::string NOON_MINUS_ONE_QUARTER ("./assets/images/noon-minus-one-quarter.png");
+// std::string NOON_FILENAME ("./assets/images/noon.png");
+// std::string NOON_PLUS_ONE_QUARTER ("./assets/images/noon-plus-one-quarter.png");
+// std::string NOON_PLUS_HALF ("./assets/images/noon-plus-half.png");
+// std::string NOON_PLUS_THREE_QUARTERS ("./assets/images/noon-plus-three-quarters.png");
+// std::string DUSK_FILENAME ("./assets/images/dusk.png");
 // char* DAWN_FILENAME = (char*)"./assets/images/dawn.png";
 // char* NOON_FILENAME = (char*)"./assets/images/noon.png";
 // char* DUSK_FILENAME = (char*)"./assets/images/dusk.png";
@@ -145,7 +145,9 @@ public:
                 std::cout << "accessed pixel" << std::endl;
 
                 if (!pixel.isInvisible()) {
+                    std::cout << "set pixel" << std::endl;
                     canvas->SetPixel(x + startX, y + startY, pixel.r, pixel.g, pixel.b);
+                    std::cout << "pixel set" << std::endl;
                 }
             }
         }
