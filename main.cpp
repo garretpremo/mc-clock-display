@@ -154,7 +154,7 @@ public:
         filename = emptyString;
     }
 
-    Image(std::string filename) {
+    Image(std::string _filename) {
         filename = _filename;
         initialize();
     }
