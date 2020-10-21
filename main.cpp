@@ -760,7 +760,7 @@ int main(int argc, char* argv[]) {
     defaults.brightness = 50;
 
     Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
-    Image currentImage = Image();
+    // Image currentImage = Image();
 
     if (canvas == NULL) {
         return EXIT_FAILURE;
@@ -777,7 +777,7 @@ int main(int argc, char* argv[]) {
     while (!program_interrupted) {
         canvas->Clear();
 
-        drawCurrentTime(canvas, defaultTextColor);
+        // drawCurrentTime(canvas, defaultTextColor);
         minecraftClock->draw();
         // drawCurrentClockFace(canvas, currentImage);
 
