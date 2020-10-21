@@ -521,7 +521,7 @@ private:
             std::string filename = filePrefix + std::to_string(i) + fileSuffix;
 
             int currentHour = std::floor(currentMinutes / 60);
-            int currentMinute = std::floor(currentMinutes) % 60;
+            int currentMinute = ((int)std::floor(currentMinutes)) % 60;
 
             ClockFace clockFace(filename, currentHour, currentMinute, timeWindow);
             clockFaces.push_back(clockFace);
