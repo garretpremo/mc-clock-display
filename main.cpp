@@ -128,15 +128,21 @@ public:
     std::vector<std::vector<Pixel>> pixelMatrix;
 
     void draw(Canvas* canvas, int startX, int startY) {
+        std::cout << "draw image" << std::endl;
+
         for (uint y = 0; y < pixelMatrix.size(); y++) {
             if (program_interrupted) {
                 return;
             }
 
+            std::cout << "access row" << std::endl;
             std::vector<Pixel> pixelRow = pixelMatrix[y];
+            std::cout << "accessed row" << std::endl;
 
             for (uint x = 0; x < pixelRow.size(); x++) {
+                std::cout << "access pixel" << std::endl;
                 Pixel pixel = pixelRow[x];
+                std::cout << "accessed pixel" << std::endl;
 
                 if (!pixel.isInvisible()) {
                     canvas->SetPixel(x + startX, y + startY, pixel.r, pixel.g, pixel.b);
@@ -532,13 +538,10 @@ public:
     }
 
     void draw() {
-        std::cout << "draw" << std::endl;
         if (shouldCheckForClockFaceUpdate()) {
-            std::cout << "check for update" << std::endl;
             determineCurrentClockFaceIndex();
         }
 
-        std::cout << "draw clock faces at index " << currentIndex << std::endl;
         clockFaces[currentIndex]->draw(canvas);
     }
 
