@@ -469,12 +469,11 @@ int main(int argc, char* argv[]) {
         Number::Three(defaultTextColor).draw(canvas, 24, 1);
         Number::Four(defaultTextColor).draw(canvas, 28, 1);
 
-        Number::Five(defaultTextColor).draw(canvas, 14, 1);
-        Number::Six(defaultTextColor).draw(canvas, 18, 1);
-        Colon::New(defaultTextColor).draw(canvas, 22, 1);
-        Number::Seven(defaultTextColor).draw(canvas, 24, 1);
-        Number::Eight(defaultTextColor).draw(canvas, 28, 1);
-        
+        Number::Five(defaultTextColor).draw(canvas, 14, 7);
+        Number::Six(defaultTextColor).draw(canvas, 18, 7);
+        Colon::New(defaultTextColor).draw(canvas, 22, 7);
+        Number::Seven(defaultTextColor).draw(canvas, 24, 7);
+        Number::Eight(defaultTextColor).draw(canvas, 28, 7);
 
         dawn.draw(canvas);
         noon.draw(canvas);
