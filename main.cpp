@@ -492,8 +492,8 @@ public:
         delete image;
     }
 
-    void draw() {
-        image->draw();
+    void draw(Canvas* canvas) {
+        image->draw(canvas);
     }
 
     bool withinCurrentTime(time_t &now) {
@@ -536,7 +536,7 @@ public:
             determineCurrentClockFaceIndex();
         }
 
-        clockFaces[currentIndex]->draw();
+        clockFaces[currentIndex]->draw(canvas);
     }
 
 private:
@@ -558,7 +558,6 @@ private:
             ClockFace* clockFace = new ClockFace(filename, currentHour, currentMinute, timeWindow);
             clockFaces.push_back(clockFace);
 
-            std::cout << "filename: " << filename << ", start hour: " << currentHour << ", start minute: " << currentMinute << ", time window: " << timeWindow << std::endl;
             currentMinutes += minutesBetweenFaces;
         }
     }
@@ -569,7 +568,7 @@ private:
         for (uint i = 0; i < clockFaces.size(); i++) {
             ClockFace* clockFace = clockFaces[i];
 
-            if (clockFace.withinCurrentTime(now)) {
+            if (clockFace->withinCurrentTime(now)) {
                 currentIndex = i;
                 break;
             }
