@@ -520,8 +520,8 @@ private:
             std::string fileSuffix(".png");
             std::string filename = filePrefix + std::to_string(i) + fileSuffix;
 
-            float currentHour = std::floor(currentMinutes / 60);
-            float currentMinute = currentMinutes % 60;
+            int currentHour = std::floor(currentMinutes / 60);
+            int currentMinute = std::floor(currentMinutes) % 60;
 
             ClockFace clockFace(filename, currentHour, currentMinute, timeWindow);
             clockFaces.push_back(clockFace);
