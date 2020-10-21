@@ -525,7 +525,7 @@ int main(int argc, char* argv[]) {
     srand(time(NULL));
 
     // MColor bg = MColor(100, 40, 0, 255);
-    MColor defaultTextColor = MColor(150, 150, 150, 255);
+    MColor defaultTextColor = MColor(100, 100, 100, 255);
 
     // define matrix defaults
     RGBMatrix::Options defaults;
@@ -553,7 +553,7 @@ int main(int argc, char* argv[]) {
 
         drawCurrentTime(canvas, defaultTextColor);
         drawCurrentClockFace(canvas, currentImage);
-        usleep(1 * 10000000);
+        usleep(1 * 1000000);
 
         // Color foreground = randomColor();
         // draw(canvas, background, foreground);
