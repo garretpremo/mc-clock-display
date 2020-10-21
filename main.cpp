@@ -10,6 +10,7 @@
 #include <cmath>
 #include <chrono>
 #include <ctime>
+#include <cstring>
 #include <string>
 
 using rgb_matrix::Canvas;
