@@ -17,10 +17,11 @@ using rgb_matrix::RGBMatrix;
 
 #define FPS 60
 #define MAX_COLOR_VALUE 255
-#define DAWN_FILENAME"./assets/images/dawn.png"
-#define NOON_FILENAME"./assets/images/noon.png"
-#define DUSK_FILENAME"./assets/images/dusk.png"
-#define MIDNIGHT_FILENAME"./assets/images/midnight.png"
+
+char* DAWN_FILENAME "./assets/images/dawn.png"
+char* NOON_FILENAME "./assets/images/noon.png"
+char* DUSK_FILENAME "./assets/images/dusk.png"
+char* MIDNIGHT_FILENAME "./assets/images/midnight.png"
 
 volatile bool program_interrupted = false;
 static void InterruptHandler(int signo) {
@@ -467,7 +468,7 @@ void drawCurrentClockFace(Canvas* canvas, Image* image) {
         *image = Image(MIDNIGHT_FILENAME);
     }
 
-    image->draw();
+    image->draw(canvas);
 }
 
 void drawCurrentTime(Canvas* canvas, MColor color) {
