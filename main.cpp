@@ -532,10 +532,13 @@ public:
     }
 
     void draw() {
+        std::cout << "draw" << std::endl;
         if (shouldCheckForClockFaceUpdate()) {
+            std::cout << "check for update" << std::endl;
             determineCurrentClockFaceIndex();
         }
 
+        std::cout << "draw clock faces at index " << currentIndex << std::endl;
         clockFaces[currentIndex]->draw(canvas);
     }
 
