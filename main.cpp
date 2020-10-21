@@ -479,20 +479,24 @@ public:
     int hour;
     int min;
     float window;
-    Image image;
+    Image* image;
 
     ClockFace(std::string _filename, int _hour, int _min, float _window) {
-        image = Image(_filename);
+        image = new Image(_filename);
         hour = _hour;
         min = _min;
         window = _window;
+    }
+
+    ~ClockFace() {
+        delete image;
     }
 };
 
 class MinecraftClock {
 
 private:
-    Image currentImage;
+    Image* currentImage = NULL;
     Canvas* canvas;
 
     std::vector<ClockFace> clockFaces = {};
@@ -500,7 +504,6 @@ private:
 public:
 
     MinecraftClock(Canvas* canvas) {
-        currentImage = Image();
         canvas = canvas;
         initializeClockFaces();
     }
