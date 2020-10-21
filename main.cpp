@@ -98,7 +98,9 @@ public:
     std::vector<std::vector<Pixel>> pixelMatrix;
 
     void draw(Canvas* canvas, int startX, int startY) {
-        std::cout << pixelMatrix.size();
+        std::cout << "Draw" << std::endl;
+        std::cout << pixelMatrix.size() << std::endl;
+        
         for (uint y = 0; y < pixelMatrix.size(); y++) {
             if (program_interrupted) {
                 return;
