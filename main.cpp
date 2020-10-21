@@ -509,7 +509,7 @@ public:
     }
 
     ~MinecraftClock() {
-        for (int i = 0; i < clockFaces.size(); i++) {
+        for (uint i = 0; i < clockFaces.size(); i++) {
             delete clockFaces[i]; 
         }
     }
@@ -522,12 +522,12 @@ private:
         float currentMinutes = 0;
 
         float minutesBetweenFaces = (24 / 16) * 60;
-        std::cout << "minutes between faces" minutesBetweenFaces << std::endl;
+        std::cout << "minutes between faces" << minutesBetweenFaces << std::endl;
         
         float timeWindow = minutesBetweenFaces / 2;
         std::cout << "time window" << timeWindow << std::endl;
 
-        for (uint i = 0; i < images; i++) {
+        for (int i = 0; i < images; i++) {
             std::string filePrefix("./assets/images_numbered/");
             std::string fileSuffix(".png");
             std::string filename = filePrefix + std::to_string(i) + fileSuffix;
