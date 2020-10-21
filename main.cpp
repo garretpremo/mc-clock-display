@@ -469,11 +469,9 @@ void draw(Canvas *canvas, Color background, Color foreground) {
 
 void drawCurrentClockFace(Canvas* canvas, Image &image) {
     time_t now = time(0);
-
     tm* localTime = localtime(&now);
 
     int hour = localTime->tm_hour;
-    std::cout << "hour " << hour << std::endl;
 
     if (hour >= 3 && hour < 9) {
         if (image.filename.compare(DAWN_FILENAME) != 0) {
@@ -488,9 +486,7 @@ void drawCurrentClockFace(Canvas* canvas, Image &image) {
             image = Image(DUSK_FILENAME);
         }
     } else if (image.filename.compare(MIDNIGHT_FILENAME) != 0) {
-        std::cout << "init midnight" << std::endl;
         image = Image(MIDNIGHT_FILENAME);
-        std::cout << "init'd midnight" << std::endl;
     }
 
     image.draw(canvas);
