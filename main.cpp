@@ -490,7 +490,7 @@ bool withinTime(time_t &now, int withinMinutes, int ofHours, int ofMinutes) {
     std::cout << adjustedTime.tm_hour << ":" << adjustedTime.tm_min << " is ";
 
     double seconds = difftime(now, mktime(&adjustedTime));
-    double minutes = seconds / 60;
+    double minutes = std::abs(seconds / 60);
 
     std::cout << minutes << " minutes" << std::endl;
 
