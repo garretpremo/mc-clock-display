@@ -472,7 +472,8 @@ int main(int argc, char* argv[]) {
 
         // Number::One(defaultTextColor).draw(canvas, 14, 1);
         // Number::Two(defaultTextColor).draw(canvas, 18, 1);
-        Colon::New(defaultTextColor).draw(canvas, 21, 1);
+        Colon colon = Colon::New(defaultTextColor);
+        colon.draw(canvas, 21, 1);
 
         usleep(1 * 1000000);
         // Number::Three(defaultTextColor).draw(canvas, 24, 1);
