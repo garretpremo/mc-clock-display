@@ -453,17 +453,17 @@ void drawCurrentTime(Canvas* canvas, MColor color) {
 
     tm* localTime = localtime(&now);
 
+    int hour = localTime->tm_hour;
     int min = localTime->tm_min;
-    int sec = localTime->tm_sec;
 
+    int hourTensDigit = (int)std::floor(hour / 10.0);
     int minTensDigit = (int)std::floor(min / 10.0);
-    int secTensDigit = (int)std::floor(sec / 10);
 
-    Number::From(minTensDigit, color).draw(canvas, 14, 1);
-    Number::From(min % 10, color).draw(canvas, 18, 1);
+    Number::From(hourTensDigit, color).draw(canvas, 14, 1);
+    Number::From(hour % 10, color).draw(canvas, 18, 1);
     Colon::New(color).draw(canvas, 22, 1);
-    Number::From(secTensDigit, color).draw(canvas, 24, 1);
-    Number::From(sec % 10, color).draw(canvas, 28, 1);
+    Number::From(minTensDigit, color).draw(canvas, 24, 1);
+    Number::From(min % 10, color).draw(canvas, 28, 1);
 }
 
 // get a random number between 0 and 255
