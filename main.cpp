@@ -480,12 +480,12 @@ void draw(Canvas *canvas, Color background, Color foreground) {
 }
 
 bool withinTime(time_t &now, int withinMinutes, int ofHours, int ofMinutes) {
-    tm adjustedTime = *localTime(&now);
+    tm adjustedTime = *localtime(&now);
 
     adjustedTime.tm_hour = ofHours;
-    adjustedTime.th_min = ofMinutes;
+    adjustedTime.tm_min = ofMinutes;
 
-    double seconds = diffTime(now, mktime(&adjustedTime));
+    double seconds = difftime(now, mktime(&adjustedTime));
     double minutes = seconds / 60;
 
     return minutes < withinMinutes;
@@ -494,7 +494,7 @@ bool withinTime(time_t &now, int withinMinutes, int ofHours, int ofMinutes) {
 void drawCurrentClockFace(Canvas* canvas, Image &image) {
     time_t now = time(0);
 
-    if (withinTime(now, 45, 6, 0) { // dawn
+    if (withinTime(now, 45, 6, 0)) { // dawn
         if (image.filename.compare(DAWN_FILENAME) != 0) {
             image = Image(DAWN_FILENAME);
         }
