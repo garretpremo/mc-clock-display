@@ -481,18 +481,12 @@ void draw(Canvas *canvas, Color background, Color foreground) {
 
 bool withinTime(time_t &now, int withinMinutes, int ofHours, int ofMinutes) {
     tm adjustedTime = *localtime(&now);
-    
-    std::cout << "difference between " << adjustedTime.tm_hour << ":" << adjustedTime.tm_min << " and ";
 
     adjustedTime.tm_hour = ofHours;
     adjustedTime.tm_min = ofMinutes;
 
-    std::cout << adjustedTime.tm_hour << ":" << adjustedTime.tm_min << " is ";
-
     double seconds = difftime(now, mktime(&adjustedTime));
     double minutes = std::abs(seconds / 60);
-
-    std::cout << minutes << " minutes" << std::endl;
 
     return minutes < withinMinutes;
 }
@@ -504,13 +498,49 @@ void drawCurrentClockFace(Canvas* canvas, Image &image) {
         if (image.filename.compare(DAWN_FILENAME) != 0) {
             image = Image(DAWN_FILENAME);
         }
+    } else if (withinTime(now, 45, 7, 30)) {
+        if (image.filename.compare(NOON_MINUS_THREE_QUARTERS) != 0) {
+            image = Image(NOON_MINUS_THREE_QUARTERS);
+        }
+    } else if (withinTime(now, 45, 9, 0)) {
+        if (image.filename.compare(NOON_MINUS_HALF) != 0) {
+            image = Image(NOON_MINUS_HALF);
+        }
+    } else if (withinTime(now, 45, 10, 30)) {
+        if (image.filename.compare(NOON_MINUS_ONE_QUARTER) != 0) {
+            image = Image(NOON_MINUS_ONE_QUARTER);
+        }
     } else if (withinTime(now, 45, 12, 0)) { // noon
         if (image.filename.compare(NOON_FILENAME) != 0) {
             image = Image(NOON_FILENAME);
         }
+    } else if (withinTime(now, 45, 13, 30)) {
+        if (image.filename.compare(NOON_PLUS_ONE_QUARTER) != 0) {
+            image = Image(NOON_PLUS_ONE_QUARTER);
+        }
+    } else if (withinTime(now, 45, 15, 0)) {
+        if (image.filename.compare(NOON_PLUS_HALF) != 0) {
+            image = Image(NOON_PLUS_HALF);
+        }
+    } else if (withinTime(now, 45, 16, 30)) {
+        if (image.filename.compare(NOON_PLUS_THREE_QUARTERS) != 0) {
+            image = Image(NOON_PLUS_THREE_QUARTERS);
+        }
     } else if (withinTime(now, 45, 18, 0)) { // dusk
         if (image.filename.compare(DUSK_FILENAME) != 0) {
             image = Image(DUSK_FILENAME);
+        }
+    } else if (withinTime(now, 45, 19, 30)) {
+        if (image.filename.compare(MIDNIGHT_MINUS_THREE_QUARTERS) != 0) {
+            image = Image(MIDNIGHT_MINUS_THREE_QUARTERS);
+        }
+    } else if (withinTime(now, 45, 21, 0)) {
+        if (image.filename.compare(MIDNIGHT_MINUS_HALF) != 0) {
+            image = Image(MIDNIGHT_MINUS_HALF);
+        }
+    } else if (withinTime(now, 45, 22, 30)) {
+        if (image.filename.compare(MIDNIGHT_MINUS_ONE_QUARTER) != 0) {
+            image = Image(MIDNIGHT_MINUS_ONE_QUARTER);
         }
     } else if (withinTime(now, 45, 0, 0)) { // midnight
         if (image.filename.compare(MIDNIGHT_FILENAME) != 0) {
@@ -525,7 +555,7 @@ void drawCurrentClockFace(Canvas* canvas, Image &image) {
             image = Image(MIDNIGHT_PLUS_HALF);
         }
     } else if (withinTime(now, 45, 4, 30)) {
-        if (image.filename.compare(MIDNIGHT_PLUS_THREE_QUARTERS)) {
+        if (image.filename.compare(MIDNIGHT_PLUS_THREE_QUARTERS) != 0) {
             image = Image(MIDNIGHT_PLUS_THREE_QUARTERS);
         }
     }
