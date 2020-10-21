@@ -10,6 +10,7 @@
 #include <cmath>
 #include <chrono>
 #include <ctime>
+#include <string>
 
 using rgb_matrix::Canvas;
 using rgb_matrix::Color;
@@ -18,9 +19,13 @@ using rgb_matrix::RGBMatrix;
 #define FPS 60
 #define MAX_COLOR_VALUE 255
 
-char* DAWN_FILENAME = (char*)"./assets/images/dawn.png";
-char* NOON_FILENAME = (char*)"./assets/images/noon.png";
-char* DUSK_FILENAME = (char*)"./assets/images/dusk.png";
+std::string DAWN_FILENAME ("./assets/images/dawn.png");
+std::string NOON_FILENAME ("./assets/images/noon.png");
+std::string DUSK_FILENAME ("./assets/images/dusk.png");
+std::string MIDNIGHT_FILENAME ("./assets/images/midnight.png");
+// char* DAWN_FILENAME = (char*)"./assets/images/dawn.png";
+// char* NOON_FILENAME = (char*)"./assets/images/noon.png";
+// char* DUSK_FILENAME = (char*)"./assets/images/dusk.png";
 // char* MIDNIGHT_FILENAME = (char*)"./assets/images/midnight.png";
 
 // Image dawn = Image("./assets/images/dawn.png");
@@ -136,14 +141,19 @@ public:
 class Image: public PixelMatrix {
 
 public:
-    const char *filename;
+    std::string filename;
     int width;
     int height;
     png_byte colorType;
     png_byte bitDepth;
     png_bytep *rowPointers = NULL;
 
-    Image(const char *_filename) {
+    Image() {
+        std::string emptyString ("");
+        filename = emptyString;
+    }
+
+    Image(std::string filename) {
         filename = _filename;
         initialize();
     }
@@ -161,7 +171,13 @@ public:
 
 private:
     void initialize() {
-        FILE *file = fopen(filename, "rb");
+
+        char* f_cstr = new char[filename.length()+1];
+        std::strcpy(f_cstr, filename.c_str());
+
+        FILE* file = fopen(f_cstr, "rb");
+
+        delete[] f_cstr;
 
         if (!file) {
             fclose(file);
@@ -459,20 +475,20 @@ void drawCurrentClockFace(Canvas* canvas, Image* image) {
     std::cout << "hour " << hour << std::endl;
 
     if (hour >= 3 && hour < 9) {
-        if (image == NULL || image->filename != DAWN_FILENAME) {
+        if (image == NULL || image->filename.compare(DAWN_FILENAME) != 0) {
             *image = Image(DAWN_FILENAME);
         }
     } else if (hour >= 9 && hour < 15) {
-        if (image == NULL || image->filename != NOON_FILENAME) {
+        if (image == NULL || image->filename.compare(NOON_FILENAME) != 0) {
             *image = Image(NOON_FILENAME);
         }
     } else if (hour >= 15 && hour < 21) {
-        if (image == NULL || image->filename != DUSK_FILENAME) {
+        if (image == NULL || image->filename.compare(DUSK_FILENAME) != 0) {
             *image = Image(DUSK_FILENAME);
         }
-    } else if (image == NULL || image->filename != "./assets/images/midnight.png") {
+    } else if (image == NULL || image->filename.compare(MIDNIGHT_FILENAME) != 0) {
         std::cout << "init midnight" << std::endl;
-        *image = Image("./assets/images/midnight.png");
+        *image = Image(MIDNIGHT_FILENAME);
         std::cout << "init'd midnight" << std::endl;
     }
 
