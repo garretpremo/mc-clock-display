@@ -467,7 +467,7 @@ void draw(Canvas *canvas, Color background, Color foreground) {
     }
 }
 
-void drawCurrentClockFace(Canvas* canvas, Image* image) {
+void drawCurrentClockFace(Canvas* canvas, Image &image) {
     time_t now = time(0);
 
     tm* localTime = localtime(&now);
@@ -476,24 +476,24 @@ void drawCurrentClockFace(Canvas* canvas, Image* image) {
     std::cout << "hour " << hour << std::endl;
 
     if (hour >= 3 && hour < 9) {
-        if (image == NULL || image->filename.compare(DAWN_FILENAME) != 0) {
-            *image = Image(DAWN_FILENAME);
+        if (image.filename.compare(DAWN_FILENAME) != 0) {
+            image = Image(DAWN_FILENAME);
         }
     } else if (hour >= 9 && hour < 15) {
-        if (image == NULL || image->filename.compare(NOON_FILENAME) != 0) {
-            *image = Image(NOON_FILENAME);
+        if (image.filename.compare(NOON_FILENAME) != 0) {
+            image = Image(NOON_FILENAME);
         }
     } else if (hour >= 15 && hour < 21) {
-        if (image == NULL || image->filename.compare(DUSK_FILENAME) != 0) {
-            *image = Image(DUSK_FILENAME);
+        if (image.filename.compare(DUSK_FILENAME) != 0) {
+            image = Image(DUSK_FILENAME);
         }
-    } else if (image == NULL || image->filename.compare(MIDNIGHT_FILENAME) != 0) {
+    } else if (image.filename.compare(MIDNIGHT_FILENAME) != 0) {
         std::cout << "init midnight" << std::endl;
-        *image = Image(MIDNIGHT_FILENAME);
+        image = Image(MIDNIGHT_FILENAME);
         std::cout << "init'd midnight" << std::endl;
     }
 
-    image->draw(canvas);
+    image.draw(canvas);
 }
 
 void drawCurrentTime(Canvas* canvas, MColor color) {
@@ -541,7 +541,7 @@ int main(int argc, char* argv[]) {
     defaults.brightness = 50;
 
     Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
-    Image* currentImage = NULL;
+    Image currentImage = Image();
 
     if (canvas == NULL) {
         return EXIT_FAILURE;
