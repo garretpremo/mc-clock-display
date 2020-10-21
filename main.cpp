@@ -478,28 +478,45 @@ class ClockFace {
 public:
     int hour;
     int min;
-    float window;
+    float timeWindow;
     Image* image;
 
-    ClockFace(std::string _filename, int _hour, int _min, float _window) {
+    ClockFace(std::string _filename, int _hour, int _min, float _timeWindow) {
         image = new Image(_filename);
         hour = _hour;
         min = _min;
-        window = _window;
+        timeWindow = _timeWindow;
     }
 
     ~ClockFace() {
         delete image;
+    }
+
+    void draw() {
+        image->draw();
+    }
+
+    bool withinCurrentTime(time_t &now) {
+        tm adjustedTime = *localtime(&now);
+
+        adjustedTime.tm_hour = hour;
+        adjustedTime.tm_min = min;
+
+        double seconds = difftime(now, mktime(&adjustedTime));
+        double minutes = std::abs(seconds / 60);
+
+        return minutes < timeWindow;
     }
 };
 
 class MinecraftClock {
 
 private:
-    Image* currentImage = NULL;
     Canvas* canvas;
-
     std::vector<ClockFace*> clockFaces = {};
+    
+    int currentIndex = -1;
+    time_t lastChecked;
 
 public:
 
@@ -512,6 +529,14 @@ public:
         for (uint i = 0; i < clockFaces.size(); i++) {
             delete clockFaces[i]; 
         }
+    }
+
+    void draw() {
+        if (shouldCheckForClockFaceUpdate()) {
+            determineCurrentClockFaceIndex();
+        }
+
+        clockFaces[currentIndex]->draw();
     }
 
 private:
@@ -536,6 +561,33 @@ private:
             std::cout << "filename: " << filename << ", start hour: " << currentHour << ", start minute: " << currentMinute << ", time window: " << timeWindow << std::endl;
             currentMinutes += minutesBetweenFaces;
         }
+    }
+
+    void determineCurrentClockFaceIndex() {
+        time_t now = time(0);
+
+        for (uint i = 0; i < clockFaces.size(); i++) {
+            ClockFace* clockFace = clockFaces[i];
+
+            if (clockFace.withinCurrentTime(now)) {
+                currentIndex = i;
+                break;
+            }
+        }
+
+        lastChecked = now;
+    }
+
+    bool shouldCheckForClockFaceUpdate() {
+        if (currentIndex == -1) {
+            return true;
+        }
+
+        time_t now = time(0);
+
+        double seconds = difftime(now, lastChecked);
+
+        return seconds >= 60;
     }
 };
 
@@ -723,23 +775,24 @@ int main(int argc, char* argv[]) {
 
     MinecraftClock* minecraftClock = new MinecraftClock(canvas);
 
-    // while (!program_interrupted) {
-    //     canvas->Clear();
+    while (!program_interrupted) {
+        canvas->Clear();
 
-    //     drawCurrentTime(canvas, defaultTextColor);
-    //     drawCurrentClockFace(canvas, currentImage);
+        drawCurrentTime(canvas, defaultTextColor);
+        minecraftClock->draw();
+        // drawCurrentClockFace(canvas, currentImage);
 
-    //     if (!program_interrupted) {
-    //         usleep(1 * 100000);
-    //     }
+        if (!program_interrupted) {
+            usleep(1 * 100000);
+        }
 
-    //     // Color foreground = randomColor();
-    //     // draw(canvas, background, foreground);
-    //     // background = foreground;
-    //     if (iteration++ % 80 == 79) {
-    //         spinClock(canvas);
-    //     }
-    // }
+        // Color foreground = randomColor();
+        // draw(canvas, background, foreground);
+        // background = foreground;
+        // if (iteration++ % 80 == 79) {
+        //     spinClock(canvas);
+        // }
+    }
 
     canvas->Clear();
     delete canvas;
