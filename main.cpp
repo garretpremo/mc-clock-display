@@ -509,6 +509,7 @@ int main(int argc, char* argv[]) {
 
     while (!program_interrupted) {
 
+        canvas->Clear();
         // canvas->Fill(bg.r, bg.g, bg.b);
 
         drawCurrentTime(canvas, defaultTextColor);
