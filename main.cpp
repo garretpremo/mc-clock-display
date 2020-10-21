@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <unistd.h>
-#include <algorithm.h>
+#include <algorithm>
 #include <png.h>
 
 using rgb_matrix::Canvas;
