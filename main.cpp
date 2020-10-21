@@ -474,6 +474,63 @@ public:
     }
 };
 
+class ClockFace {
+
+public:
+    int hour;
+    int min;
+    float window;
+    Image image;
+
+    ClockFace(std::string _filename, int _hour, int _min, float _window) {
+        image = Image(_filename);
+        hour = _hour;
+        min = _min;
+        window = _window;
+    }
+};
+
+class MinecraftClock {
+
+private:
+    Image currentImage;
+    Canvas* canvas;
+
+    std::vector<ClockFace> clockFaces = {};
+
+public:
+
+    MinecraftClock(Canvas* canvas) {
+        currentImage = Image();
+        canvas = canvas;
+        initializeClockFaces();
+    }
+
+private:
+
+    void initializeClockFaces() {
+        std::cout << "initializing clock faces..." << std::endl;
+        uint images = 16;
+        float currentMinutes = 0;
+        float minutesBetweenFaces = (24 / 16) * 60;
+        float timeWindow = minutesBetweenFaces / 2;
+
+        for (uint i = 0; i < images; i++) {
+            std::string filePrefix("./assets/images_numbered/");
+            std::string fileSuffix(".png");
+            std::string filename = filePrefix + std::to_string(i) + fileSuffix;
+
+            float currentHour = std::floor(currentMinutes / 60);
+            float currentMinute = currentMinutes % 60;
+
+            ClockFace clockFace(filename, currentHour, currentMinute, timeWindow);
+            clockFaces.push_back(clockFace);
+
+            std::cout << "filename: " << filename << ", start hour: " << currentHour << ", start minute: " << currentMinute << ", time window: " << timeWindow << std::endl;
+        }
+    }
+};
+
 void draw(Canvas *canvas, Color background, Color foreground) {
 
     canvas->Fill(background.r, background.g, background.b);
@@ -655,6 +712,8 @@ int main(int argc, char* argv[]) {
 
     int iteration = 0;
     // Color background = randomColor();
+
+    MinecraftClock minecraftClock();
 
     while (!program_interrupted) {
         canvas->Clear();
