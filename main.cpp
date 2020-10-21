@@ -190,6 +190,14 @@ public:
         }
     }
 
+    void drawAndWait(Canvas* canvas, int time) {
+        PixelMatrix::draw(canvas);
+
+        if (!program_interrupted) {
+            usleep(time);
+        }
+    }
+
 private:
     void initialize() {
 
@@ -572,10 +580,6 @@ void drawCurrentClockFace(Canvas* canvas, Image &image) {
 }
 
 void spinClock(Canvas* canvas) {
-    Image(DAWN_FILENAME).drawAndWait(canvas);
-    Image(NOON_MINUS_THREE_QUARTERS).drawAndWait(canvas);
-    Image(NOON_MINUS_HALF).drawAndWait(canvas);
-    Image(NOON_MINUS_ONE_QUARTER).drawAndWait(canvas);
     Image(NOON_FILENAME).drawAndWait(canvas);
     Image(NOON_PLUS_ONE_QUARTER).drawAndWait(canvas);
     Image(NOON_PLUS_HALF).drawAndWait(canvas);
@@ -588,6 +592,11 @@ void spinClock(Canvas* canvas) {
     Image(MIDNIGHT_PLUS_ONE_QUARTER).drawAndWait(canvas);
     Image(MIDNIGHT_PLUS_HALF).drawAndWait(canvas);
     Image(MIDNIGHT_PLUS_THREE_QUARTERS).drawAndWait(canvas);
+    Image(DAWN_FILENAME).drawAndWait(canvas);
+    Image(NOON_MINUS_THREE_QUARTERS).drawAndWait(canvas);
+    Image(NOON_MINUS_HALF).drawAndWait(canvas);
+    Image(NOON_MINUS_ONE_QUARTER).drawAndWait(canvas);
+    Image(NOON_FILENAME).drawAndWait(canvas, (1 * 10000000));
 }
 
 void drawCurrentTime(Canvas* canvas, MColor color) {
