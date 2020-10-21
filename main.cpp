@@ -596,7 +596,7 @@ void spinClock(Canvas* canvas) {
     Image(NOON_MINUS_THREE_QUARTERS).drawAndWait(canvas);
     Image(NOON_MINUS_HALF).drawAndWait(canvas);
     Image(NOON_MINUS_ONE_QUARTER).drawAndWait(canvas);
-    Image(NOON_FILENAME).drawAndWait(canvas, (1 * 10000000));
+    Image(NOON_FILENAME).drawAndWait(canvas);
 }
 
 void drawCurrentTime(Canvas* canvas, MColor color) {
