@@ -98,12 +98,14 @@ public:
     std::vector<std::vector<Pixel>> pixelMatrix;
 
     void draw(Canvas* canvas, int startX, int startY) {
+        std::cout << pixelMatrix.size();
         for (uint y = 0; y < pixelMatrix.size(); y++) {
             if (program_interrupted) {
                 return;
             }
 
             std::vector<Pixel> pixelRow = pixelMatrix[y];
+            std::cout << pixelRow.size() << std::endl;;
 
             for (uint x = 0; x < pixelRow.size(); x++) {
                 Pixel pixel = pixelRow[x];
