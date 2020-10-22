@@ -20,32 +20,6 @@ using rgb_matrix::RGBMatrix;
 #define FPS 60
 #define MAX_COLOR_VALUE 255
 
-// std::string MIDNIGHT_MINUS_THREE_QUARTERS ("./assets/images/midnight-minus-three-quarters.png");
-// std::string MIDNIGHT_MINUS_HALF ("./assets/images/midnight-minus-half.png");
-// std::string MIDNIGHT_MINUS_ONE_QUARTER ("./assets/images/midnight-minus-one-quarter.png");
-// std::string MIDNIGHT_FILENAME ("./assets/images/midnight.png");
-// std::string MIDNIGHT_PLUS_ONE_QUARTER ("./assets/images/midnight-plus-one-quarter.png");
-// std::string MIDNIGHT_PLUS_HALF ("./assets/images/midnight-plus-half.png");
-// std::string MIDNIGHT_PLUS_THREE_QUARTERS ("./assets/images/midnight-plus-three-quarters.png");
-// std::string DAWN_FILENAME ("./assets/images/dawn.png");
-// std::string NOON_MINUS_THREE_QUARTERS ("./assets/images/noon-minus-three-quarters.png");
-// std::string NOON_MINUS_HALF ("./assets/images/noon-minus-half.png");
-// std::string NOON_MINUS_ONE_QUARTER ("./assets/images/noon-minus-one-quarter.png");
-// std::string NOON_FILENAME ("./assets/images/noon.png");
-// std::string NOON_PLUS_ONE_QUARTER ("./assets/images/noon-plus-one-quarter.png");
-// std::string NOON_PLUS_HALF ("./assets/images/noon-plus-half.png");
-// std::string NOON_PLUS_THREE_QUARTERS ("./assets/images/noon-plus-three-quarters.png");
-// std::string DUSK_FILENAME ("./assets/images/dusk.png");
-// char* DAWN_FILENAME = (char*)"./assets/images/dawn.png";
-// char* NOON_FILENAME = (char*)"./assets/images/noon.png";
-// char* DUSK_FILENAME = (char*)"./assets/images/dusk.png";
-// char* MIDNIGHT_FILENAME = (char*)"./assets/images/midnight.png";
-
-// Image dawn = Image("./assets/images/dawn.png");
-// Image noon = Image("./assets/images/noon.png");
-// Image dusk = Image("./assets/images/dusk.png");
-// Image midnight = Image("./assets/images/midnight.png");
-
 volatile bool program_interrupted = false;
 static void InterruptHandler(int signo) {
     program_interrupted = true;
@@ -317,6 +291,11 @@ private:
 
 public:
 
+    void draw(Canvas* canvas, int startX, int startY) {
+        Number::Empty().draw(canvas, startX, startY);
+        PixelMatrix::draw(canvas, startX, startY);
+    }
+
     static Number From(uint number, MColor color) {
         // class designed for only single-digit numbers
         uint numberNormalized = number % 10;
@@ -450,6 +429,17 @@ public:
             { Pixel::From(c), Pixel::Empty(), Pixel::From(c) },  // * *
             { Pixel::From(c), Pixel::Empty(), Pixel::From(c) },  // * *
             { Pixel::From(c), Pixel::From(c), Pixel::From(c) }   // ***
+        };
+        return Number(matrix);
+    }
+
+    static Number Empty() {
+        std::vector<std::vector<Pixel>> matrix = { 
+            { Pixel::Empty(), Pixel::Empty(), Pixel::Empty() },
+            { Pixel::Empty(), Pixel::Empty(), Pixel::Empty() },
+            { Pixel::Empty(), Pixel::Empty(), Pixel::Empty() },
+            { Pixel::Empty(), Pixel::Empty(), Pixel::Empty() },
+            { Pixel::Empty(), Pixel::Empty(), Pixel::Empty() }
         };
         return Number(matrix);
     }
@@ -600,131 +590,6 @@ private:
     }
 };
 
-void draw(Canvas *canvas, Color background, Color foreground) {
-
-    canvas->Fill(background.r, background.g, background.b);
-
-    int center_x = canvas->width() / 2;
-    int center_y = canvas->height() / 2;
-    float radius_max = canvas->width() / 2;
-    float angle_step = 1.0 / 360;
-
-    for (float a = 0, r = 0; r < radius_max; a += angle_step, r += angle_step) {
-        if (program_interrupted) {
-            return;
-        }
-
-        float dot_x = cos(a * 2 * M_PI) * r;
-        float dot_y = sin(a * 2 * M_PI) * r;
-        canvas->SetPixel(center_x + dot_x, center_y + dot_y, foreground.r, foreground.g, foreground.b);
-        usleep(1 * 1000); // wait a little to slow down things.
-    }
-}
-
-bool withinTime(time_t &now, int withinMinutes, int ofHours, int ofMinutes) {
-    tm adjustedTime = *localtime(&now);
-
-    adjustedTime.tm_hour = ofHours;
-    adjustedTime.tm_min = ofMinutes;
-
-    double seconds = difftime(now, mktime(&adjustedTime));
-    double minutes = std::abs(seconds / 60);
-
-    return minutes < withinMinutes;
-}
-
-// void drawCurrentClockFace(Canvas* canvas, Image &image) {
-//     time_t now = time(0);
-//
-//     if (withinTime(now, 45, 6, 0)) { // dawn
-//         if (image.filename.compare(DAWN_FILENAME) != 0) {
-//             image = Image(DAWN_FILENAME);
-//         }
-//     } else if (withinTime(now, 45, 7, 30)) {
-//         if (image.filename.compare(NOON_MINUS_THREE_QUARTERS) != 0) {
-//             image = Image(NOON_MINUS_THREE_QUARTERS);
-//         }
-//     } else if (withinTime(now, 45, 9, 0)) {
-//         if (image.filename.compare(NOON_MINUS_HALF) != 0) {
-//             image = Image(NOON_MINUS_HALF);
-//         }
-//     } else if (withinTime(now, 45, 10, 30)) {
-//         if (image.filename.compare(NOON_MINUS_ONE_QUARTER) != 0) {
-//             image = Image(NOON_MINUS_ONE_QUARTER);
-//         }
-//     } else if (withinTime(now, 45, 12, 0)) { // noon
-//         if (image.filename.compare(NOON_FILENAME) != 0) {
-//             image = Image(NOON_FILENAME);
-//         }
-//     } else if (withinTime(now, 45, 13, 30)) {
-//         if (image.filename.compare(NOON_PLUS_ONE_QUARTER) != 0) {
-//             image = Image(NOON_PLUS_ONE_QUARTER);
-//         }
-//     } else if (withinTime(now, 45, 15, 0)) {
-//         if (image.filename.compare(NOON_PLUS_HALF) != 0) {
-//             image = Image(NOON_PLUS_HALF);
-//         }
-//     } else if (withinTime(now, 45, 16, 30)) {
-//         if (image.filename.compare(NOON_PLUS_THREE_QUARTERS) != 0) {
-//             image = Image(NOON_PLUS_THREE_QUARTERS);
-//         }
-//     } else if (withinTime(now, 45, 18, 0)) { // dusk
-//         if (image.filename.compare(DUSK_FILENAME) != 0) {
-//             image = Image(DUSK_FILENAME);
-//         }
-//     } else if (withinTime(now, 45, 19, 30)) {
-//         if (image.filename.compare(MIDNIGHT_MINUS_THREE_QUARTERS) != 0) {
-//             image = Image(MIDNIGHT_MINUS_THREE_QUARTERS);
-//         }
-//     } else if (withinTime(now, 45, 21, 0)) {
-//         if (image.filename.compare(MIDNIGHT_MINUS_HALF) != 0) {
-//             image = Image(MIDNIGHT_MINUS_HALF);
-//         }
-//     } else if (withinTime(now, 45, 22, 30)) {
-//         if (image.filename.compare(MIDNIGHT_MINUS_ONE_QUARTER) != 0) {
-//             image = Image(MIDNIGHT_MINUS_ONE_QUARTER);
-//         }
-//     } else if (withinTime(now, 45, 0, 0)) { // midnight
-//         if (image.filename.compare(MIDNIGHT_FILENAME) != 0) {
-//             image = Image(MIDNIGHT_FILENAME);
-//         }
-//     } else if (withinTime(now, 45, 1, 30)) {
-//         if (image.filename.compare(MIDNIGHT_PLUS_ONE_QUARTER) != 0) {
-//             image = Image(MIDNIGHT_PLUS_ONE_QUARTER);
-//         }
-//     } else if (withinTime(now, 45, 3, 0)) {
-//         if (image.filename.compare(MIDNIGHT_PLUS_HALF) != 0) {
-//             image = Image(MIDNIGHT_PLUS_HALF);
-//         }
-//     } else if (withinTime(now, 45, 4, 30)) {
-//         if (image.filename.compare(MIDNIGHT_PLUS_THREE_QUARTERS) != 0) {
-//             image = Image(MIDNIGHT_PLUS_THREE_QUARTERS);
-//         }
-//     }
-//
-//     image.draw(canvas);
-// }
-
-// void spinClock(Canvas* canvas) {
-//     Image(NOON_FILENAME).drawAndWait(canvas);
-//     Image(NOON_PLUS_ONE_QUARTER).drawAndWait(canvas);
-//     Image(NOON_PLUS_HALF).drawAndWait(canvas);
-//     Image(NOON_PLUS_THREE_QUARTERS).drawAndWait(canvas);
-//     Image(DUSK_FILENAME).drawAndWait(canvas);
-//     Image(MIDNIGHT_MINUS_THREE_QUARTERS).drawAndWait(canvas);
-//     Image(MIDNIGHT_MINUS_HALF).drawAndWait(canvas);
-//     Image(MIDNIGHT_MINUS_ONE_QUARTER).drawAndWait(canvas);
-//     Image(MIDNIGHT_FILENAME).drawAndWait(canvas);
-//     Image(MIDNIGHT_PLUS_ONE_QUARTER).drawAndWait(canvas);
-//     Image(MIDNIGHT_PLUS_HALF).drawAndWait(canvas);
-//     Image(MIDNIGHT_PLUS_THREE_QUARTERS).drawAndWait(canvas);
-//     Image(DAWN_FILENAME).drawAndWait(canvas);
-//     Image(NOON_MINUS_THREE_QUARTERS).drawAndWait(canvas);
-//     Image(NOON_MINUS_HALF).drawAndWait(canvas);
-//     Image(NOON_MINUS_ONE_QUARTER).drawAndWait(canvas);
-//     Image(NOON_FILENAME).drawAndWait(canvas);
-// }
-
 void drawCurrentTime(Canvas* canvas, MColor color) {
     time_t now = time(0);
 
@@ -780,24 +645,18 @@ int main(int argc, char* argv[]) {
     signal(SIGINT, InterruptHandler);
 
     int iteration = 0;
-    // Color background = randomColor();
 
     MinecraftClock* minecraftClock = new MinecraftClock(canvas);
 
     while (!program_interrupted) {
-        canvas->Clear();
 
         drawCurrentTime(canvas, defaultTextColor);
         minecraftClock->draw();
-        // drawCurrentClockFace(canvas, currentImage);
 
         if (!program_interrupted) {
             usleep(1 * 100000);
         }
 
-        // Color foreground = randomColor();
-        // draw(canvas, background, foreground);
-        // background = foreground;
         if (iteration++ % 80 == 79) {
             minecraftClock->spin();
         }
