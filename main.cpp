@@ -161,7 +161,7 @@ public:
         PixelMatrix::draw(canvas);
 
         if (!program_interrupted) {
-            usleep(1 * 100000);
+            usleep(1 * 40000);
         }
     }
 
@@ -546,13 +546,13 @@ public:
 private:
 
     void initializeClockFaces() {
-        int images = 16;
+        int images = 64;
         float currentMinutes = 0;
         float minutesBetweenFaces = (24.0 / images) * 60;
         float timeWindow = minutesBetweenFaces / 2;
 
         for (int i = 0; i < images; i++) {
-            std::string filePrefix("./assets/images_numbered/");
+            std::string filePrefix("./assets/all_images_numbered/");
             std::string fileSuffix(".png");
             std::string filename = filePrefix + std::to_string(i) + fileSuffix;
 
