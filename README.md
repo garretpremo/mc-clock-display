@@ -25,3 +25,7 @@ The clock should accuractely represent the real world day-night cycle.
 
 ## Eventual Upgrades
 - [64x64 display](https://www.sparkfun.com/products/14824)
+
+
+## Shoutouts
+- https://gist.github.com/niw/5963798 Very helpful for getting started with libpng
