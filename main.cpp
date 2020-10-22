@@ -633,97 +633,97 @@ bool withinTime(time_t &now, int withinMinutes, int ofHours, int ofMinutes) {
     return minutes < withinMinutes;
 }
 
-void drawCurrentClockFace(Canvas* canvas, Image &image) {
-    time_t now = time(0);
+// void drawCurrentClockFace(Canvas* canvas, Image &image) {
+//     time_t now = time(0);
 
-    if (withinTime(now, 45, 6, 0)) { // dawn
-        if (image.filename.compare(DAWN_FILENAME) != 0) {
-            image = Image(DAWN_FILENAME);
-        }
-    } else if (withinTime(now, 45, 7, 30)) {
-        if (image.filename.compare(NOON_MINUS_THREE_QUARTERS) != 0) {
-            image = Image(NOON_MINUS_THREE_QUARTERS);
-        }
-    } else if (withinTime(now, 45, 9, 0)) {
-        if (image.filename.compare(NOON_MINUS_HALF) != 0) {
-            image = Image(NOON_MINUS_HALF);
-        }
-    } else if (withinTime(now, 45, 10, 30)) {
-        if (image.filename.compare(NOON_MINUS_ONE_QUARTER) != 0) {
-            image = Image(NOON_MINUS_ONE_QUARTER);
-        }
-    } else if (withinTime(now, 45, 12, 0)) { // noon
-        if (image.filename.compare(NOON_FILENAME) != 0) {
-            image = Image(NOON_FILENAME);
-        }
-    } else if (withinTime(now, 45, 13, 30)) {
-        if (image.filename.compare(NOON_PLUS_ONE_QUARTER) != 0) {
-            image = Image(NOON_PLUS_ONE_QUARTER);
-        }
-    } else if (withinTime(now, 45, 15, 0)) {
-        if (image.filename.compare(NOON_PLUS_HALF) != 0) {
-            image = Image(NOON_PLUS_HALF);
-        }
-    } else if (withinTime(now, 45, 16, 30)) {
-        if (image.filename.compare(NOON_PLUS_THREE_QUARTERS) != 0) {
-            image = Image(NOON_PLUS_THREE_QUARTERS);
-        }
-    } else if (withinTime(now, 45, 18, 0)) { // dusk
-        if (image.filename.compare(DUSK_FILENAME) != 0) {
-            image = Image(DUSK_FILENAME);
-        }
-    } else if (withinTime(now, 45, 19, 30)) {
-        if (image.filename.compare(MIDNIGHT_MINUS_THREE_QUARTERS) != 0) {
-            image = Image(MIDNIGHT_MINUS_THREE_QUARTERS);
-        }
-    } else if (withinTime(now, 45, 21, 0)) {
-        if (image.filename.compare(MIDNIGHT_MINUS_HALF) != 0) {
-            image = Image(MIDNIGHT_MINUS_HALF);
-        }
-    } else if (withinTime(now, 45, 22, 30)) {
-        if (image.filename.compare(MIDNIGHT_MINUS_ONE_QUARTER) != 0) {
-            image = Image(MIDNIGHT_MINUS_ONE_QUARTER);
-        }
-    } else if (withinTime(now, 45, 0, 0)) { // midnight
-        if (image.filename.compare(MIDNIGHT_FILENAME) != 0) {
-            image = Image(MIDNIGHT_FILENAME);
-        }
-    } else if (withinTime(now, 45, 1, 30)) {
-        if (image.filename.compare(MIDNIGHT_PLUS_ONE_QUARTER) != 0) {
-            image = Image(MIDNIGHT_PLUS_ONE_QUARTER);
-        }
-    } else if (withinTime(now, 45, 3, 0)) {
-        if (image.filename.compare(MIDNIGHT_PLUS_HALF) != 0) {
-            image = Image(MIDNIGHT_PLUS_HALF);
-        }
-    } else if (withinTime(now, 45, 4, 30)) {
-        if (image.filename.compare(MIDNIGHT_PLUS_THREE_QUARTERS) != 0) {
-            image = Image(MIDNIGHT_PLUS_THREE_QUARTERS);
-        }
-    }
+//     if (withinTime(now, 45, 6, 0)) { // dawn
+//         if (image.filename.compare(DAWN_FILENAME) != 0) {
+//             image = Image(DAWN_FILENAME);
+//         }
+//     } else if (withinTime(now, 45, 7, 30)) {
+//         if (image.filename.compare(NOON_MINUS_THREE_QUARTERS) != 0) {
+//             image = Image(NOON_MINUS_THREE_QUARTERS);
+//         }
+//     } else if (withinTime(now, 45, 9, 0)) {
+//         if (image.filename.compare(NOON_MINUS_HALF) != 0) {
+//             image = Image(NOON_MINUS_HALF);
+//         }
+//     } else if (withinTime(now, 45, 10, 30)) {
+//         if (image.filename.compare(NOON_MINUS_ONE_QUARTER) != 0) {
+//             image = Image(NOON_MINUS_ONE_QUARTER);
+//         }
+//     } else if (withinTime(now, 45, 12, 0)) { // noon
+//         if (image.filename.compare(NOON_FILENAME) != 0) {
+//             image = Image(NOON_FILENAME);
+//         }
+//     } else if (withinTime(now, 45, 13, 30)) {
+//         if (image.filename.compare(NOON_PLUS_ONE_QUARTER) != 0) {
+//             image = Image(NOON_PLUS_ONE_QUARTER);
+//         }
+//     } else if (withinTime(now, 45, 15, 0)) {
+//         if (image.filename.compare(NOON_PLUS_HALF) != 0) {
+//             image = Image(NOON_PLUS_HALF);
+//         }
+//     } else if (withinTime(now, 45, 16, 30)) {
+//         if (image.filename.compare(NOON_PLUS_THREE_QUARTERS) != 0) {
+//             image = Image(NOON_PLUS_THREE_QUARTERS);
+//         }
+//     } else if (withinTime(now, 45, 18, 0)) { // dusk
+//         if (image.filename.compare(DUSK_FILENAME) != 0) {
+//             image = Image(DUSK_FILENAME);
+//         }
+//     } else if (withinTime(now, 45, 19, 30)) {
+//         if (image.filename.compare(MIDNIGHT_MINUS_THREE_QUARTERS) != 0) {
+//             image = Image(MIDNIGHT_MINUS_THREE_QUARTERS);
+//         }
+//     } else if (withinTime(now, 45, 21, 0)) {
+//         if (image.filename.compare(MIDNIGHT_MINUS_HALF) != 0) {
+//             image = Image(MIDNIGHT_MINUS_HALF);
+//         }
+//     } else if (withinTime(now, 45, 22, 30)) {
+//         if (image.filename.compare(MIDNIGHT_MINUS_ONE_QUARTER) != 0) {
+//             image = Image(MIDNIGHT_MINUS_ONE_QUARTER);
+//         }
+//     } else if (withinTime(now, 45, 0, 0)) { // midnight
+//         if (image.filename.compare(MIDNIGHT_FILENAME) != 0) {
+//             image = Image(MIDNIGHT_FILENAME);
+//         }
+//     } else if (withinTime(now, 45, 1, 30)) {
+//         if (image.filename.compare(MIDNIGHT_PLUS_ONE_QUARTER) != 0) {
+//             image = Image(MIDNIGHT_PLUS_ONE_QUARTER);
+//         }
+//     } else if (withinTime(now, 45, 3, 0)) {
+//         if (image.filename.compare(MIDNIGHT_PLUS_HALF) != 0) {
+//             image = Image(MIDNIGHT_PLUS_HALF);
+//         }
+//     } else if (withinTime(now, 45, 4, 30)) {
+//         if (image.filename.compare(MIDNIGHT_PLUS_THREE_QUARTERS) != 0) {
+//             image = Image(MIDNIGHT_PLUS_THREE_QUARTERS);
+//         }
+//     }
 
-    image.draw(canvas);
-}
+//     image.draw(canvas);
+// }
 
-void spinClock(Canvas* canvas) {
-    Image(NOON_FILENAME).drawAndWait(canvas);
-    Image(NOON_PLUS_ONE_QUARTER).drawAndWait(canvas);
-    Image(NOON_PLUS_HALF).drawAndWait(canvas);
-    Image(NOON_PLUS_THREE_QUARTERS).drawAndWait(canvas);
-    Image(DUSK_FILENAME).drawAndWait(canvas);
-    Image(MIDNIGHT_MINUS_THREE_QUARTERS).drawAndWait(canvas);
-    Image(MIDNIGHT_MINUS_HALF).drawAndWait(canvas);
-    Image(MIDNIGHT_MINUS_ONE_QUARTER).drawAndWait(canvas);
-    Image(MIDNIGHT_FILENAME).drawAndWait(canvas);
-    Image(MIDNIGHT_PLUS_ONE_QUARTER).drawAndWait(canvas);
-    Image(MIDNIGHT_PLUS_HALF).drawAndWait(canvas);
-    Image(MIDNIGHT_PLUS_THREE_QUARTERS).drawAndWait(canvas);
-    Image(DAWN_FILENAME).drawAndWait(canvas);
-    Image(NOON_MINUS_THREE_QUARTERS).drawAndWait(canvas);
-    Image(NOON_MINUS_HALF).drawAndWait(canvas);
-    Image(NOON_MINUS_ONE_QUARTER).drawAndWait(canvas);
-    Image(NOON_FILENAME).drawAndWait(canvas);
-}
+// void spinClock(Canvas* canvas) {
+//     Image(NOON_FILENAME).drawAndWait(canvas);
+//     Image(NOON_PLUS_ONE_QUARTER).drawAndWait(canvas);
+//     Image(NOON_PLUS_HALF).drawAndWait(canvas);
+//     Image(NOON_PLUS_THREE_QUARTERS).drawAndWait(canvas);
+//     Image(DUSK_FILENAME).drawAndWait(canvas);
+//     Image(MIDNIGHT_MINUS_THREE_QUARTERS).drawAndWait(canvas);
+//     Image(MIDNIGHT_MINUS_HALF).drawAndWait(canvas);
+//     Image(MIDNIGHT_MINUS_ONE_QUARTER).drawAndWait(canvas);
+//     Image(MIDNIGHT_FILENAME).drawAndWait(canvas);
+//     Image(MIDNIGHT_PLUS_ONE_QUARTER).drawAndWait(canvas);
+//     Image(MIDNIGHT_PLUS_HALF).drawAndWait(canvas);
+//     Image(MIDNIGHT_PLUS_THREE_QUARTERS).drawAndWait(canvas);
+//     Image(DAWN_FILENAME).drawAndWait(canvas);
+//     Image(NOON_MINUS_THREE_QUARTERS).drawAndWait(canvas);
+//     Image(NOON_MINUS_HALF).drawAndWait(canvas);
+//     Image(NOON_MINUS_ONE_QUARTER).drawAndWait(canvas);
+//     Image(NOON_FILENAME).drawAndWait(canvas);
+// }
 
 void drawCurrentTime(Canvas* canvas, MColor color) {
     time_t now = time(0);
