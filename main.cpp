@@ -787,9 +787,9 @@ int main(int argc, char* argv[]) {
     while (!program_interrupted) {
         canvas->Clear();
 
-        // drawCurrentTime(canvas, defaultTextColor);
+        drawCurrentTime(canvas, defaultTextColor);
         minecraftClock->draw();
-        drawCurrentClockFace(canvas, currentImage);
+        // drawCurrentClockFace(canvas, currentImage);
 
         if (!program_interrupted) {
             usleep(1 * 100000);
