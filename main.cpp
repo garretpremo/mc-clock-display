@@ -520,6 +520,7 @@ private:
     
     int currentIndex = -1;
     time_t lastChecked;
+    int clockUpdateInterval = 60; // seconds
 
 public:
 
@@ -537,9 +538,15 @@ public:
     void draw() {
         if (shouldCheckForClockFaceUpdate()) {
             determineCurrentClockFaceIndex();
+            clockFaces[currentIndex]->draw(canvas);
         }
+    }
 
-        clockFaces[currentIndex]->draw(canvas);
+    void spin() {
+        for (uint i = 0; i < clockFaces.size() + 1; i++) {
+            int indexToDraw = (currentIndex + i) % clockFaces.size();
+            clockFaces[indexToDraw]->draw(canvas);
+        }
     }
 
 private:
@@ -589,7 +596,7 @@ private:
 
         double seconds = difftime(now, lastChecked);
 
-        return seconds >= 60;
+        return seconds >= clockUpdateInterval;
     }
 };
 
@@ -628,7 +635,7 @@ bool withinTime(time_t &now, int withinMinutes, int ofHours, int ofMinutes) {
 
 // void drawCurrentClockFace(Canvas* canvas, Image &image) {
 //     time_t now = time(0);
-
+//
 //     if (withinTime(now, 45, 6, 0)) { // dawn
 //         if (image.filename.compare(DAWN_FILENAME) != 0) {
 //             image = Image(DAWN_FILENAME);
@@ -694,7 +701,7 @@ bool withinTime(time_t &now, int withinMinutes, int ofHours, int ofMinutes) {
 //             image = Image(MIDNIGHT_PLUS_THREE_QUARTERS);
 //         }
 //     }
-
+//
 //     image.draw(canvas);
 // }
 
@@ -782,7 +789,7 @@ int main(int argc, char* argv[]) {
 
         // drawCurrentTime(canvas, defaultTextColor);
         minecraftClock->draw();
-        // drawCurrentClockFace(canvas, currentImage);
+        drawCurrentClockFace(canvas, currentImage);
 
         if (!program_interrupted) {
             usleep(1 * 100000);
@@ -791,9 +798,9 @@ int main(int argc, char* argv[]) {
         // Color foreground = randomColor();
         // draw(canvas, background, foreground);
         // background = foreground;
-        // if (iteration++ % 80 == 79) {
-        //     spinClock(canvas);
-        // }
+        if (iteration++ % 80 == 79) {
+            minecraftClock->spin();
+        }
     }
 
     canvas->Clear();
