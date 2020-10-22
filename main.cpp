@@ -488,6 +488,10 @@ public:
         image->draw(canvas);
     }
 
+    void drawAndWait(Canvas* canvas) {
+        image->drawAndWait(canvas);
+    }
+
     bool withinCurrentTime(time_t &now) {
         tm adjustedTime = *localtime(&now);
 
@@ -535,7 +539,7 @@ public:
     void spin() {
         for (uint i = 0; i < clockFaces.size() + 1; i++) {
             int indexToDraw = (currentIndex + i) % clockFaces.size();
-            clockFaces[indexToDraw]->draw(canvas);
+            clockFaces[indexToDraw]->drawAndWait(canvas);
         }
     }
 
