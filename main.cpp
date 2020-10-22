@@ -292,7 +292,6 @@ private:
 public:
 
     void draw(Canvas* canvas, int startX, int startY) {
-        Number::Empty().draw(canvas, startX, startY);
         PixelMatrix::draw(canvas, startX, startY);
     }
 
@@ -528,8 +527,9 @@ public:
     void draw() {
         if (shouldCheckForClockFaceUpdate()) {
             determineCurrentClockFaceIndex();
-            clockFaces[currentIndex]->draw(canvas);
         }
+
+        clockFaces[currentIndex]->draw(canvas);
     }
 
     void spin() {
@@ -635,7 +635,6 @@ int main(int argc, char* argv[]) {
     defaults.brightness = 50;
 
     Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
-    // Image currentImage = Image();
 
     if (canvas == NULL) {
         return EXIT_FAILURE;
@@ -649,6 +648,7 @@ int main(int argc, char* argv[]) {
     MinecraftClock* minecraftClock = new MinecraftClock(canvas);
 
     while (!program_interrupted) {
+        canvas->Clear();
 
         drawCurrentTime(canvas, defaultTextColor);
         minecraftClock->draw();
