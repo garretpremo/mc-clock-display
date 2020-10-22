@@ -663,6 +663,7 @@ int main(int argc, char* argv[]) {
 
         if (iteration++ % 80 == 79) {
             minecraftClock->spin();
+            iteration = 0;
         }
     }
 
