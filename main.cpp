@@ -624,8 +624,6 @@ Color randomColor() {
 int main(int argc, char* argv[]) {
     std::cout << "Beginning program...\nPress Ctrl + C to exit." << std::endl;
 
-    srand(time(NULL));
-
     // MColor bg = MColor(100, 40, 0, 255);
     MColor defaultTextColor = MColor(100, 100, 100, 255);
 
@@ -661,7 +659,7 @@ int main(int argc, char* argv[]) {
             usleep(1 * 100000);
         }
 
-        if (iteration++ % 80 == 79) {
+        if (iteration++ % 140 == 139) {
             minecraftClock->spin();
             iteration = 0;
         }
