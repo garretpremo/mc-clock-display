@@ -103,14 +103,16 @@ public:
 
     void draw(Canvas* canvas, int startX, int startY) {
         
-        for (uint y = 0; y < pixelMatrix.size(); y++) {
+        unsigned int y, x;
+
+        for (y = 0; y < pixelMatrix.size(); y++) {
             if (program_interrupted) {
                 return;
             }
 
             std::vector<Pixel> pixelRow = pixelMatrix[y];
 
-            for (uint x = 0; x < pixelRow.size(); x++) {
+            for (x = 0; x < pixelRow.size(); x++) {
                 Pixel pixel = pixelRow[x];
 
                 if (!pixel.isInvisible()) {
@@ -148,7 +150,8 @@ public:
 
     ~Image() {
         if (rowPointers != NULL) {
-            for (int y = 0; y < height; y++) {
+            int y;
+            for (y = 0; y < height; y++) {
                 png_bytep row = rowPointers[y];
                 free(row);
             }
@@ -221,7 +224,8 @@ private:
         // initialize rows
         rowPointers = (png_bytep *)malloc(sizeof(png_bytep) * height);
 
-        for (int y = 0; y < height; y++) {
+        int y;
+        for (y = 0; y < height; y++) {
             png_byte *byte = (png_byte *)malloc(png_get_rowbytes(png, info));
             rowPointers[y] = byte;
         }
@@ -231,7 +235,7 @@ private:
         pixelMatrix = std::vector<std::vector<Pixel>>(height);
 
         // initialize matrix of Pixels
-        for (int y = 0; y < height; y++) {
+        for (y = 0; y < height; y++) {
             std::vector<Pixel> pixelRow(width);
             png_bytep row = rowPointers[y];
 
@@ -295,9 +299,9 @@ public:
         PixelMatrix::draw(canvas, startX, startY);
     }
 
-    static Number From(uint number, MColor color) {
+    static Number From(unsigned int number, MColor color) {
         // class designed for only single-digit numbers
-        uint numberNormalized = number % 10;
+        unsigned int numberNormalized = number % 10;
         switch (numberNormalized) {
         case 1:
             return Number::One(color);
@@ -523,7 +527,8 @@ public:
     }
 
     ~MinecraftClock() {
-        for (uint i = 0; i < clockFaces.size(); i++) {
+        unsigned int i;
+        for (i = 0; i < clockFaces.size(); i++) {
             delete clockFaces[i]; 
         }
     }
@@ -537,7 +542,8 @@ public:
     }
 
     void spin() {
-        for (uint i = 0; i < clockFaces.size() + 1; i++) {
+        unsigned int i;
+        for (i = 0; i < clockFaces.size() + 1; i++) {
             int indexToDraw = (currentIndex + i) % clockFaces.size();
             clockFaces[indexToDraw]->drawAndWait(canvas);
         }
@@ -551,7 +557,8 @@ private:
         float minutesBetweenFaces = (24.0 / images) * 60;
         float timeWindow = minutesBetweenFaces / 2;
 
-        for (int i = 0; i < images; i++) {
+        int i;
+        for (i = 0; i < images; i++) {
             std::string filePrefix("./assets/all_images_numbered/");
             std::string fileSuffix(".png");
             std::string filename = filePrefix + std::to_string(i) + fileSuffix;
@@ -569,7 +576,8 @@ private:
     void determineCurrentClockFaceIndex() {
         time_t now = time(0);
 
-        for (uint i = 0; i < clockFaces.size(); i++) {
+        unsigned int i;
+        for (i = 0; i < clockFaces.size(); i++) {
             ClockFace* clockFace = clockFaces[i];
 
             if (clockFace->withinCurrentTime(now)) {

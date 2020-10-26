@@ -1,0 +1,12 @@
+assets/gif-frames.zip
+assets/gif-frames
+assets/results
+
+.vscode
+.dockerfile
+.gitignore
+.gitmodules
+
+Dockerfile
+
+README.md
