@@ -568,8 +568,10 @@ private:
         float minutesBetweenFaces = (24.0 / images) * 60;
         float timeWindow = minutesBetweenFaces / 2;
 
-        std::string workingDirectory = getCurrentWorkingDirectory();
-        std::string filePrefix = workingDirectory + "/assets/all_images_numbered/";
+        std::string executablePath = getExecutablePath();
+        str::erase (executablePath.end() - 4, executablePath.end());
+
+        std::string filePrefix = executablePath + "assets/all_images_numbered/";
         std::string fileExtension(".png");
 
         int i;
