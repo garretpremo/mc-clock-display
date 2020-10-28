@@ -33,6 +33,11 @@ std::string getExecutablePath() {
     return std::string( buffer, (count > 0) ? count : 0 );
 }
 
+std::string getCurrentWorkingDirectory() {
+    char temp[1024];
+    return ( getcwd(temp, sizeof(temp)) ? std::string(temp) : std::string(""));
+}
+
 class MColor {
 public:
     int r, g, b, a;
@@ -563,8 +568,8 @@ private:
         float minutesBetweenFaces = (24.0 / images) * 60;
         float timeWindow = minutesBetweenFaces / 2;
 
-        std::string executablePath = getExecutablePath();
-        std::string filePrefix = executablePath + "/assets/all_images_numbered/";
+        std::string workingDirectory = getCurrentWorkingDirectory();
+        std::string filePrefix = workingDirectory + "/assets/all_images_numbered/";
         std::string fileExtension(".png");
 
         int i;
@@ -639,7 +644,9 @@ Color randomColor() {
 
 int main(int argc, char* argv[]) {
     std::cout << "Beginning program...\nPress Ctrl + C to exit." << std::endl;
+    std::cout << "Current working directory: " << getCurrentWorkingDirectory() << std::endl;
     std::cout << "Executable Path: " << getExecutablePath() << std::endl;
+    std::cout << "argv[0]: " << argv[0] << std::endl;
 
     // MColor bg = MColor(100, 40, 0, 255);
     MColor defaultTextColor = MColor(100, 100, 100, 255);
