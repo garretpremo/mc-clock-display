@@ -27,6 +27,11 @@ static void InterruptHandler(int signo) {
               << "Ctrl + C detected, exiting..." << std::endl;
 }
 
+std::string getCurrentWorkingDirectory() {
+    char temp[_MAX_PATH];
+    return ( getcwd(temp, sizeof(temp)) ? std::string(temp) : std::string(""));
+}
+
 class MColor {
 public:
     int r, g, b, a;
@@ -557,7 +562,8 @@ private:
         float minutesBetweenFaces = (24.0 / images) * 60;
         float timeWindow = minutesBetweenFaces / 2;
 
-        std::cout << getcwd() << std::endl;
+        std::string cwd = getCurrentWorkingDirectory();
+        std::cout << cwd << std::endl;
         std::string filePrefix("./assets/all_images_numbered/");
         std::string fileExtension(".png");
 
