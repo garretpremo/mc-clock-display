@@ -28,7 +28,7 @@ static void InterruptHandler(int signo) {
 }
 
 std::string getCurrentWorkingDirectory() {
-    char temp[_MAX_PATH];
+    char temp[1024];
     return ( getcwd(temp, sizeof(temp)) ? std::string(temp) : std::string(""));
 }
 
@@ -562,9 +562,8 @@ private:
         float minutesBetweenFaces = (24.0 / images) * 60;
         float timeWindow = minutesBetweenFaces / 2;
 
-        std::string cwd = getCurrentWorkingDirectory();
-        std::cout << cwd << std::endl;
-        std::string filePrefix("./assets/all_images_numbered/");
+        std::string workingDirectory = getCurrentWorkingDirectory();
+        std::string filePrefix = workingDirectory + "/assets/all_images_numbered/";
         std::string fileExtension(".png");
 
         int i;
@@ -639,6 +638,7 @@ Color randomColor() {
 
 int main(int argc, char* argv[]) {
     std::cout << "Beginning program...\nPress Ctrl + C to exit." << std::endl;
+    std::cout << "Current working directory: " << getCurrentWorkingDirectory() << std::endl;
 
     // MColor bg = MColor(100, 40, 0, 255);
     MColor defaultTextColor = MColor(100, 100, 100, 255);
