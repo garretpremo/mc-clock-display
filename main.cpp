@@ -12,7 +12,6 @@
 #include <ctime>
 #include <cstring>
 #include <string>
-#include <filesystem>
 
 using rgb_matrix::Canvas;
 using rgb_matrix::Color;
@@ -558,7 +557,7 @@ private:
         float minutesBetweenFaces = (24.0 / images) * 60;
         float timeWindow = minutesBetweenFaces / 2;
 
-        std::cout << std::filesystem::path::current_path() << std::endl;
+        std::cout << getcwd() << std::endl;
         std::string filePrefix("./assets/all_images_numbered/");
         std::string fileExtension(".png");
 
